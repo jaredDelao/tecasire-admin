@@ -1,0 +1,47 @@
+{
+  "generator-ngx-rocket": {
+    "version": "11.0.0",
+    "props": {
+      "location": "path",
+      "strict": true,
+      "skipInstall": false,
+      "skipQuickstart": false,
+      "initGit": true,
+      "usePrefix": true,
+      "target": [
+        "web"
+      ],
+      "ui": "material",
+      "layout": "side-menu",
+      "features": [
+        "pwa",
+        "auth",
+        "lazy"
+      ],
+      "languages": [
+        "en-US",
+        "es-ES"
+      ],
+      "tools": [
+        "prettier",
+        "hads"
+      ],
+      "utility": [
+        "lodash",
+        "datefns"
+      ],
+      "deploy": "none",
+      "appName": "tecasire-admin",
+      "projectName": "tecasire-admin",
+      "packageManager": "npm",
+      "mobile": [],
+      "desktop": [],
+      "pwa": true,
+      "auth": true,
+      "lazy": true,
+      "e2e": false,
+      "cypress": false,
+      "angulartics": false
+    }
+  }
+}
