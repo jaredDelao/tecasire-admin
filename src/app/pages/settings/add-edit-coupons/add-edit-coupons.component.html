@@ -1,0 +1,153 @@
+<div class="container">
+  <div class="row mx-0 my-3">
+    <h2 class="col-12 text-primary">{{ isRegister ? 'Añadir nuevo cupón' : 'Actualizar cupón' }}</h2>
+  </div>
+
+  <ng-container [formGroup]="form">
+    <div class="row mx-0 my-3">
+      <div class="col-3">Código*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          id="feedCodigo"
+          [class]="
+            form.get('codigo')?.invalid && form.get('codigo')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+          formControlName="codigo"
+        />
+        <div id="feedCodigo" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Concepto*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          id="feedConcepto"
+          [class]="
+            form.get('concepto')?.invalid && form.get('concepto')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+          formControlName="concepto"
+        />
+        <div id="feedConcepto" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Motivo*</div>
+      <div class="col-9">
+        <select
+          id="feedMotivo"
+          formControlName="motivo"
+          [class]="
+            form.get('motivo')?.invalid && form.get('motivo')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+        >
+          <option [value]="null">Selecciona un motivo</option>
+          <option *ngFor="let c of catMotivosCupones" [value]="c.iIdMotivo">{{ c.sDescripcion }}</option>
+        </select>
+        <div id="feedMotivo" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Tipo*</div>
+      <div class="col-9">
+        <select
+          id="feedTipo"
+          formControlName="tipo"
+          [class]="form.get('tipo')?.invalid && form.get('tipo')?.touched ? 'form-control is-invalid' : 'form-control'"
+        >
+          <option [value]="null">Selecciona un tipo</option>
+          <option *ngFor="let t of catTiposCupones" [value]="t.iTipoCupon">{{ t.sDescripcion }}</option>
+        </select>
+        <div id="feedTipo" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Monto máximo*</div>
+      <div class="col-9">
+        <input
+          type="number"
+          id="feedMontoMax"
+          [class]="
+            form.get('montoMaximo')?.invalid && form.get('montoMaximo')?.touched
+              ? 'form-control is-invalid'
+              : 'form-control'
+          "
+          formControlName="montoMaximo"
+        />
+        <div id="feedMontoMax" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+      <div id="feedMontoMax" class="invalid-feedback">
+        {{ txtError }}
+      </div>
+    </div>
+
+    <div class="row mx-0 my-3">
+      <div class="col-3">Fecha inicio*</div>
+      <div class="col-9">
+        <input
+          type="date"
+          id="feedFechaInicio"
+          [class]="
+            form.get('fechaInicio')?.invalid && form.get('fechaInicio')?.touched
+              ? 'form-control is-invalid'
+              : 'form-control'
+          "
+          formControlName="fechaInicio"
+        />
+        <div id="feedFechaInicio" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Fecha fin*</div>
+      <div class="col-9">
+        <input
+          type="date"
+          id="feedFechaFin"
+          [class]="
+            form.get('fechaFin')?.invalid && form.get('fechaFin')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+          formControlName="fechaFin"
+        />
+        <div id="feedFechaFin" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row mx-0 my-3">
+      <div class="col-3">Asignación automatica</div>
+      <div class="col-9">
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="asignacionAut" formControlName="asignacion" />
+        </div>
+      </div>
+    </div> -->
+  </ng-container>
+  <div class="row mx-0 mt-5">
+    <div class="col-auto">
+      <button
+        mat-raised-button
+        color="primary"
+        class="px-5"
+        type="button"
+        (click)="action()"
+        [disabled]="isLoading || form.invalid || !form.dirty"
+      >
+        <app-loader style="display: inline-block" size="0.7" [isLoading]="isLoading"></app-loader>
+        <span>{{ isRegister ? 'Crear nuevo cupón' : 'Actualizar' }}</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,141 @@
+<div class="_user-management">
+  <div class="row mx-0 my-3">
+    <h2 class="col-12 text-primary">{{ isRegister ? 'Añadir nuevo usuario' : 'Actualizar usuario' }}</h2>
+  </div>
+
+  <div class="d-flex justify-content-end mt-2" *ngIf="!isRegister">
+    <div class="col-auto">
+      <button mat-raised-button color="accent" type="button" (click)="openModalUpdatePassword()">
+        Restablecer contraseña
+      </button>
+    </div>
+  </div>
+
+  <ng-container [formGroup]="form">
+    <div class="row mx-0 my-3" *ngIf="!isRegister">
+      <div class="col-3">ID de usuario*</div>
+      <div class="col-9">
+        <input type="text" class="form-control" formControlName="idUser" />
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Nombre de usuario*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          [class]="form.get('name')?.invalid && form.get('name')?.touched ? 'form-control is-invalid' : 'form-control'"
+          id="feedUser"
+          formControlName="name"
+        />
+        <div id="feedUser" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Apellidos*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          id="feedFamily"
+          [class]="
+            form.get('family_name')?.invalid && form.get('family_name')?.touched
+              ? 'form-control is-invalid'
+              : 'form-control'
+          "
+          formControlName="family_name"
+        />
+        <div id="feedFamily" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Correo electrónico*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          id="feedEmail"
+          [class]="
+            form.get('email')?.invalid && form.get('email')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+          formControlName="email"
+        />
+        <div id="feedEmail" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="isRegister">
+      <div class="row mx-0 my-3">
+        <div class="col-3">Contraseña*</div>
+        <div class="col-9">
+          <input
+            type="password"
+            id="feedPassword"
+            [class]="
+              form.get('password')?.invalid && form.get('password')?.touched
+                ? 'form-control is-invalid'
+                : 'form-control'
+            "
+            formControlName="password"
+          />
+          <div id="feedPassword" class="invalid-feedback">
+            {{ _password?.errors?.pattern ? txtErrorPassword : txtError }}
+          </div>
+        </div>
+      </div>
+      <div class="row mx-0 my-3">
+        <div class="col-3">Cofirmar contraseña*</div>
+        <div class="col-9">
+          <input
+            type="password"
+            id="feedRepeatPassword"
+            [class]="
+              form.get('repeat_password')?.invalid && form.get('repeat_password')?.touched
+                ? 'form-control is-invalid'
+                : 'form-control'
+            "
+            formControlName="repeat_password"
+          />
+          <div id="feedRepeatPassword" class="invalid-feedback">Las contraseñas no coinciden</div>
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="row mx-0 my-3">
+      <div class="col-3">Perfil*</div>
+      <div class="col-9">
+        <select
+          id="feedProfile"
+          formControlName="profile"
+          [class]="
+            form.get('profile')?.invalid && form.get('profile')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+        >
+          <option [value]="null">Selecciona un perfil</option>
+          <option *ngFor="let c of catProfile" [value]="c.iIdPerfil">{{ c.sDescripcion }}</option>
+        </select>
+        <div id="feedProfile" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="row mx-0 mt-5">
+    <div class="col-auto">
+      <button
+        mat-raised-button
+        color="primary"
+        class="px-5"
+        type="button"
+        (click)="action()"
+        [disabled]="isLoading || form.invalid || !form.dirty"
+      >
+        <app-loader style="display: inline-block" size="0.7" [isLoading]="isLoading"></app-loader>
+        <span>{{ isRegister ? 'Crear nuevo usuario' : 'Actualizar' }}</span>
+      </button>
+    </div>
+  </div>
+</div>

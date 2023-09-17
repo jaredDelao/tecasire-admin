@@ -8,6 +8,7 @@ import { I18nModule } from '@app/i18n';
 import { MaterialModule } from '@app/material.module';
 import { AuthModule } from '@app/auth';
 import { ShellComponent } from './shell.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   imports: [
@@ -17,11 +18,9 @@ import { ShellComponent } from './shell.component';
     MaterialModule,
     AuthModule,
     I18nModule,
-    RouterModule
+    RouterModule,
+    FontAwesomeModule,
   ],
-  declarations: [
-    ShellComponent
-  ]
+  declarations: [ShellComponent],
 })
-export class ShellModule {
-}
+export class ShellModule {}

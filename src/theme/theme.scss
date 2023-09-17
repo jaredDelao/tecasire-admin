@@ -2,6 +2,13 @@
  * Global application theme.
  * Framework overrides and customization goes here.
  */
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+);
+
+// Theme boostrap
+@import "~bootstrap/scss/bootstrap";
 
 // stylelint-disable-next-line selector-max-universal
 * {

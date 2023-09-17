@@ -1,0 +1,92 @@
+<div class="_user-management">
+  <div class="row mx-0 my-3">
+    <h2 class="col-12 text-primary">{{ isRegister ? 'Añadir nuevo Código postal' : 'Actualizar Código postal' }}</h2>
+    <p class="col-12 text-danger" *ngIf="errorCp">{{ '*No se encontraron resultados con el CP ingresado' }}</p>
+  </div>
+
+  <ng-container [formGroup]="form">
+    <div class="row mx-0 my-3">
+      <div class="col-3">Código postal*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          id="feedCp"
+          [class]="form.get('cp')?.invalid && form.get('cp')?.touched ? 'form-control is-invalid' : 'form-control'"
+          formControlName="cp"
+        />
+        <div id="feedCp" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Alcaldía*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          [class]="
+            form.get('alcaldia')?.invalid && form.get('alcaldia')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+          id="feedAlcaldia"
+          formControlName="alcaldia"
+        />
+        <div id="feedAlcaldia" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row mx-0 my-3">
+      <div class="col-3">Colonia*</div>
+      <div class="col-9">
+        <select
+          id="feedColonia"
+          [class]="
+            form.get('colonia')?.invalid && form.get('colonia')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+          formControlName="colonia"
+        >
+          <option value="">Selecciona una colonia</option>
+          <option *ngFor="let c of cps" [value]="c.sColonia">{{ c.sColonia }}</option>
+        </select>
+
+        <div id="feedColonia" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Monto envío*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          id="feedMonto"
+          [class]="
+            form.get('montoEnvio')?.invalid && form.get('montoEnvio')?.touched
+              ? 'form-control is-invalid'
+              : 'form-control'
+          "
+          formControlName="montoEnvio"
+        />
+        <div id="feedMonto" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="row mx-0 mt-5">
+    <div class="col-auto">
+      <button
+        mat-raised-button
+        color="primary"
+        class="px-5"
+        type="button"
+        (click)="action()"
+        [disabled]="isLoading || form.invalid || !form.dirty"
+      >
+        <app-loader style="display: inline-block" size="0.7" [isLoading]="isLoading"></app-loader>
+        <span>{{ isRegister ? 'Crear nuevo código postal' : 'Actualizar' }}</span>
+      </button>
+    </div>
+  </div>
+</div>

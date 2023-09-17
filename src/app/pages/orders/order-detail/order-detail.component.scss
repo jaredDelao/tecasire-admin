@@ -1,0 +1,24 @@
+._order-detail {
+  max-width: 900px;
+  h2 {
+    font-size: 700;
+  }
+
+  .btn-regresar {
+    border: none;
+    background-color: transparent;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .contenedor-tabla {
+    text-align: center;
+    width: 100%;
+    margin: 15px 0;
+    font-weight: 700;
+    & .row div {
+      border: 1px solid rgb(201, 201, 201);
+      padding: 25px 15px;
+    }
+  }
+}

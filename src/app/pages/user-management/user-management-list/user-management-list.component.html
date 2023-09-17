@@ -1,0 +1,50 @@
+<div class="p-4">
+  <h2 class="text-primary" style="font-weight: 600">
+    Gestión de usuarios &nbsp; &nbsp; <app-loader [isLoading]="isLoading"></app-loader>
+  </h2>
+  <br />
+
+  <ng-container *ngIf="!isLoading && users.length > 0">
+    <table class="table table-striped mb-5">
+      <thead>
+        <tr style="background-color: #c4c4c4">
+          <th scope="col">ID de usuario</th>
+          <th scope="col">Nombre de usuario</th>
+          <th scope="col">Correo electrónico</th>
+          <th scope="col">Perfil</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <th scope="row">{{ user.iIdUsrEmpleado }}</th>
+          <td>{{ user.sNombreEmpleado + ' ' + user.sApellidoPaterno }}</td>
+          <td>{{ user.sCorreo }}</td>
+          <td>{{ user.iIdPerfil | profileName : catProfiles }}</td>
+          <td class="text-center">
+            <fa-icon
+              [icon]="faPencilAlt"
+              class="text-primary mx-1"
+              [routerLink]="['/user-management/user', user.iIdUsrEmpleado]"
+            ></fa-icon>
+            <fa-icon [icon]="faTimes" class="text-danger mx-1" (click)="openModalDelete(user)"></fa-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ngb-pagination
+      (pageChange)="pageChange($event)"
+      class="d-flex justify-content-center"
+      [collectionSize]="totalPages"
+      [(page)]="page"
+      [pageSize]="10"
+      [maxSize]="5"
+      [boundaryLinks]="true"
+    >
+    </ngb-pagination>
+  </ng-container>
+
+  <hr class="divider" />
+  <button class="btn btn-primary" type="button" routerLink="/user-management/user">Añadir nuevo</button>
+</div>

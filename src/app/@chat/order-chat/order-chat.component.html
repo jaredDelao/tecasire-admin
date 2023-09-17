@@ -1,0 +1,44 @@
+<div class="wrapper-order-chat">
+  <div class="p-2 header d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div class="title">
+        <span class="fw-bold">{{ 'Pedido: ' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrapper-tabla">
+    <div class="tabla mt-1 px-1" *ngIf="order.length > 0">
+      <table class="tabla__table">
+        <tr class="tabla__first-row">
+          <th>PRODUCTO</th>
+          <th>PRECIO</th>
+          <th>CANTIDAD</th>
+          <th>TOTAL</th>
+        </tr>
+        <tr class="tabla__rows" *ngFor="let item of order">
+          <td class="tabla__description-row">
+            <p class="mb-0">
+              {{ item.sNombre }}
+            </p>
+            <p class="text-primary mb-0">{{ item.sNombreCategoria }}</p>
+          </td>
+
+          <td class="tabla__precio">{{ item.dprecioCI | currency }}</td>
+
+          <td>
+            <div class="form-group tabla__select-precio text-center">
+              <span class="">{{ item.dCantidad }}</span>
+            </div>
+          </td>
+
+          <td class="tabla__total">{{ item.subtotal | currency }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="px-1 mt-3">
+    <button mat-raised-button color="primary" (click)="openDialog()">Costo de envío</button>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
+import { CoreModule } from '@core';
 import { QuoteService } from './quote.service';
 
 describe('QuoteService', () => {
@@ -10,12 +11,8 @@ describe('QuoteService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule
-      ],
-      providers: [
-        QuoteService
-      ]
+      imports: [CoreModule, HttpClientTestingModule],
+      providers: [QuoteService],
     });
 
     quoteService = TestBed.inject(QuoteService);
@@ -52,7 +49,7 @@ describe('QuoteService', () => {
       });
       httpMock.expectOne({}).flush(null, {
         status: 500,
-        statusText: 'error'
+        statusText: 'error',
       });
     });
   });

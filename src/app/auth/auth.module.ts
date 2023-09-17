@@ -19,10 +19,8 @@ import { LoginComponent } from './login.component';
     FlexLayoutModule,
     MaterialModule,
     I18nModule,
-    AuthRoutingModule
+    AuthRoutingModule,
   ],
-  declarations: [
-    LoginComponent
-  ]
+  declarations: [LoginComponent],
 })
-export class AuthModule { }
+export class AuthModule {}

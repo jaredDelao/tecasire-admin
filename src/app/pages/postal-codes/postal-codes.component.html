@@ -1,0 +1,50 @@
+<div class="p-4">
+  <h2 class="text-primary" style="font-weight: 600">
+    Códigos postales &nbsp; &nbsp; <app-loader [isLoading]="isLoading"></app-loader>
+  </h2>
+  <br />
+
+  <ng-container *ngIf="!isLoading && postalCodes.length > 0">
+    <table class="table table-striped mb-5">
+      <thead>
+        <tr style="background-color: #c4c4c4">
+          <th scope="col">Alcaldía</th>
+          <th scope="col">Código postal</th>
+          <th scope="col">Colonia</th>
+          <th scope="col">Monto de envío</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cp of postalCodes">
+          <th scope="row">{{ cp.sAlcaldia }}</th>
+          <td>{{ cp.cp }}</td>
+          <td>{{ cp.sColonia }}</td>
+          <td>{{ cp.dMonto | currency }}</td>
+          <td class="text-center">
+            <fa-icon
+              [icon]="faPencilAlt"
+              class="text-primary mx-1"
+              [routerLink]="['/postal-codes/cp', cp.iIdCodigoPostal]"
+            ></fa-icon>
+            <fa-icon [icon]="faTimes" class="text-danger mx-1" (click)="openModalDelete(cp)"></fa-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ngb-pagination
+      (pageChange)="pageChange($event)"
+      class="d-flex justify-content-center"
+      [collectionSize]="totalPages"
+      [(page)]="page"
+      [pageSize]="10"
+      [maxSize]="5"
+      [boundaryLinks]="true"
+    >
+    </ngb-pagination>
+  </ng-container>
+
+  <hr class="divider" />
+  <button class="btn btn-primary" type="button" routerLink="/postal-codes/cp">Añadir nuevo</button>
+</div>

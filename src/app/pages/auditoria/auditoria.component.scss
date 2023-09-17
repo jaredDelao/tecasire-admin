@@ -1,0 +1,13 @@
+@import "src/theme/theme-variables.scss";
+
+tr:not(tr:nth-child(even)) {
+  background-color: #d2e1ec;
+}
+
+thead {
+  border-bottom: 3px solid $primary;
+}
+
+fa-icon {
+  cursor: pointer;
+}

@@ -1,0 +1,17 @@
+<ng-container *ngIf="!isLoading">
+  <div class="header-line"></div>
+  <div class="list">
+    <p class="text-primary" *ngIf="listUsers.length === 0">No existen chats activos</p>
+    <ng-container *ngFor="let user of listUsers">
+      <div class="content-item py-2" (click)="setUserChat(user)">
+        <img [src]="user.url_logo" />
+        <div class="content-item__data">
+          <p class="mb-0 fw-bolder">{{ user.alias }}</p>
+          <!-- <p class="mb-0 text-muted">...</p> -->
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+    </ng-container>
+  </div>
+</ng-container>

@@ -1,0 +1,123 @@
+<div class="container">
+  <div class="row mx-0 my-3">
+    <h2 class="col-12 text-primary">Editar perfil &nbsp; &nbsp; <app-loader [isLoading]="isLoading"></app-loader></h2>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <!-- <div class="d-flex justify-content-end mt-2">
+      <div class="col-auto">
+        <button mat-raised-button color="accent" type="button" (click)="openModalUpdatePassword()">
+          Restablecer contraseña
+        </button>
+      </div>
+    </div> -->
+
+    <ng-container [formGroup]="form">
+      <div class="row mx-0 my-4">
+        <div class="col-3">Nombre*</div>
+        <div class="col-9">
+          <input
+            type="text"
+            [class]="
+              form.get('sNombreEmpleado')?.invalid && form.get('sNombreEmpleado')?.touched
+                ? 'form-control is-invalid'
+                : 'form-control'
+            "
+            id="feedUser"
+            formControlName="sNombreEmpleado"
+          />
+          <div id="feedUser" class="invalid-feedback">
+            {{ txtError }}
+          </div>
+        </div>
+      </div>
+      <div class="row mx-0 my-3">
+        <div class="col-3">Apellido Paterno*</div>
+        <div class="col-9">
+          <input
+            type="text"
+            id="feedApaterno"
+            [class]="
+              form.get('sApellidoPaterno')?.invalid && form.get('sApellidoPaterno')?.touched
+                ? 'form-control is-invalid'
+                : 'form-control'
+            "
+            formControlName="sApellidoPaterno"
+          />
+          <div id="feedApaterno" class="invalid-feedback">
+            {{ txtError }}
+          </div>
+        </div>
+      </div>
+      <div class="row mx-0 my-3">
+        <div class="col-3">Apellido Materno*</div>
+        <div class="col-9">
+          <input
+            type="text"
+            id="feedMAterno"
+            [class]="
+              form.get('sApellidoMaterno')?.invalid && form.get('sApellidoMaterno')?.touched
+                ? 'form-control is-invalid'
+                : 'form-control'
+            "
+            formControlName="sApellidoMaterno"
+          />
+          <div id="feedMAterno" class="invalid-feedback">
+            {{ txtError }}
+          </div>
+        </div>
+      </div>
+      <div class="row mx-0 my-3">
+        <div class="col-3">Correo electrónico*</div>
+        <div class="col-9">
+          <input
+            type="text"
+            id="feedEmail"
+            [class]="
+              form.get('sCorreo')?.invalid && form.get('sCorreo')?.touched ? 'form-control is-invalid' : 'form-control'
+            "
+            formControlName="sCorreo"
+          />
+          <div id="feedEmail" class="invalid-feedback">
+            {{ txtError }}
+          </div>
+        </div>
+      </div>
+      <div class="row mx-0 my-3">
+        <input
+          type="file"
+          #photo
+          name="file"
+          style="display: none"
+          (change)="changeImage($event)"
+          accept=".jpg, .png, .jpeg"
+        />
+        <div class="col-3"></div>
+        <div class="col-9">
+          <div class="photo" (click)="photo.click()" *ngIf="photoConfig.photo">
+            <img [src]="photoConfig.photo" alt="photo" />
+          </div>
+
+          <button mat-raised-button color="primary" (click)="photo.click()" *ngIf="!photoConfig.photo">
+            Agregar foto
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <div class="row mx-0 mt-5 justify-content-center">
+      <div class="col-auto">
+        <button
+          mat-raised-button
+          color="primary"
+          class="px-5"
+          type="button"
+          (click)="save()"
+          [disabled]="isLoading || form.invalid || !form.dirty"
+        >
+          <app-loader style="display: inline-block" size="0.7" [isLoading]="isLoading"></app-loader>
+          <span>Guardar cambios</span>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>

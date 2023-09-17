@@ -1,0 +1,41 @@
+<div class="p-4">
+  <h2 class="text-primary" style="font-weight: 600">
+    Log de auditoría &nbsp; &nbsp; <app-loader [isLoading]="isLoading"></app-loader>
+  </h2>
+  <br />
+
+  <!-- <ng-container *ngIf="!isLoading && users.length > 0"> -->
+  <ng-container *ngIf="!isLoading && logs.length > 0">
+    <table class="table table-striped mb-5">
+      <thead>
+        <tr style="background-color: #c4c4c4">
+          <th scope="col">Fecha</th>
+          <th scope="col">Perfil</th>
+          <th scope="col">ID de usuario</th>
+          <th scope="col">Nombre de usuario</th>
+          <th scope="col">Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of logs">
+          <th scope="row">{{ log.fecha | date : 'dd-MM-YYYY' }}</th>
+          <td>{{ log.perfil }}</td>
+          <td>{{ log.IdUsuario }}</td>
+          <td>{{ log.nombre }}</td>
+          <td>{{ log.s_accion }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ngb-pagination
+      (pageChange)="pageChange($event)"
+      class="d-flex justify-content-center"
+      [collectionSize]="totalPages"
+      [(page)]="page"
+      [pageSize]="10"
+      [maxSize]="5"
+      [boundaryLinks]="true"
+    >
+    </ngb-pagination>
+  </ng-container>
+</div>

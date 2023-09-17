@@ -14,25 +14,20 @@ export interface LoginContext {
  * The login/logout methods should be replaced with proper implementation.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthenticationService {
-
-  constructor(private credentialsService: CredentialsService) { }
+  constructor(private credentialsService: CredentialsService) {}
 
   /**
    * Authenticates the user.
    * @param context The login parameters.
    * @return The user credentials.
    */
-  login(context: LoginContext): Observable<Credentials> {
+  login(credentials: Credentials, remember: boolean = true): Observable<Credentials> {
     // Replace by proper authentication call
-    const data = {
-      username: context.username,
-      token: '123456'
-    };
-    this.credentialsService.setCredentials(data, context.remember);
-    return of(data);
+    this.credentialsService.setCredentials(credentials, remember);
+    return of(credentials);
   }
 
   /**
@@ -44,5 +39,4 @@ export class AuthenticationService {
     this.credentialsService.setCredentials();
     return of(true);
   }
-
 }

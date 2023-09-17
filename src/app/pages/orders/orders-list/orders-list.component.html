@@ -1,0 +1,80 @@
+<div class="w-100 p-4">
+  <form class="contenedor-superior">
+    <h2 class="titulo">Todos los pedidos &nbsp; &nbsp; <app-loader [isLoading]="isLoading"></app-loader></h2>
+
+    <ng-container *ngIf="!isLoading">
+      <div class="form-group form-inline">
+        Buscar: <input class="form-control ml-2" type="text" [formControl]="filter" />
+      </div>
+    </ng-container>
+  </form>
+
+  <br />
+
+  <ng-container *ngIf="orders$.value.length === 0 && !isLoading">
+    <h4 class="text-danger">No se encontraron resultados</h4>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading && orders$.value.length > 0">
+    <!-- TABLA -->
+    <table class="table table-striped">
+      <thead>
+        <tr style="background-color: #c4c4c4">
+          <th scope="col">Pedido</th>
+          <th scope="col" sortable="dFechaPedido" (sort)="onSort($event)">Fecha</th>
+          <th scope="col" sortable="iTipoPedido" (sort)="onSort($event)">Tipo</th>
+          <th scope="col" sortable="nombre" (sort)="onSort($event)">Cliente</th>
+          <th scope="col">Productos</th>
+          <th scope="col">Piezas</th>
+          <th scope="col" sortable="iEstatusPedido" (sort)="onSort($event)">Estatus</th>
+          <th scope="col">Total</th>
+          <th scope="col">Factura</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders$ | async">
+          <th scope="row" class="clase-modificadora-uno">{{ order.iIdPedido }}</th>
+          <td><ngb-highlight [result]="order.dFechaPedido" [term]="filter.value"></ngb-highlight></td>
+          <td class="text-center estatusPedido">
+            <fa-icon *ngIf="order.iEstatusPedido === 1" [icon]="faStoreAlt" class="text-primary"></fa-icon>
+            <fa-icon *ngIf="order.iEstatusPedido === 2" [icon]="faTruckMoving" class="text-primary"></fa-icon>
+          </td>
+          <td><ngb-highlight [result]="order.nombre" [term]="filter.value"></ngb-highlight></td>
+          <td class="text-center">{{ order.items }}</td>
+          <td class="text-center">{{ order.num_piezas }}</td>
+          <td>
+            <app-btn-status-order [idEstatus]="order.iEstatusPedido"></app-btn-status-order>
+          </td>
+          <td>{{ order.total | currency }}</td>
+          <td>
+            <fa-icon
+              *ngIf="order.fact_pdf"
+              style="font-size: 27px; color: #e74c3c"
+              (click)="downloadFile(order.fact_pdf, 'documento_pdf')"
+              [icon]="faFilePdf"
+            ></fa-icon>
+            <fa-icon
+              *ngIf="order.fact_xml"
+              style="font-size: 27px; color: #1e8449"
+              (click)="downloadFile(order.fact_xml, 'documento_xml')"
+              [icon]="faFileExcel"
+            ></fa-icon>
+          </td>
+          <td class="text-center">
+            <fa-icon [icon]="faPencil" class="text-primary" [routerLink]="['/orders', order.iIdPedido]"></fa-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ngb-pagination
+      (pageChange)="pageChange($event)"
+      class="d-flex justify-content-center"
+      [collectionSize]="totalPages"
+      [(page)]="page"
+      [pageSize]="10"
+      [maxSize]="5"
+      [boundaryLinks]="true"
+    ></ngb-pagination>
+  </ng-container>
+</div>

@@ -1,0 +1,37 @@
+<div class="main">
+  <div class="p-2 header d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div class="icono me-2">
+        <fa-icon [icon]="faUserCircle" class="text-white" style="font-size: 2.5em"></fa-icon>
+      </div>
+      <div class="title">
+        <span class="fw-bold ml-3">{{ user?.alias ? user?.alias : 'Selecciona un usuario' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrapper-messages">
+    <div class="chat-messages w-100 bg-light p-2">
+      <div
+        [ngClass]="['bubble', mess.position === 'left' ? 'bubble-left' : 'bubble-right']"
+        *ngFor="let mess of messages"
+      >
+        <span>{{ mess.message }}</span>
+      </div>
+    </div>
+
+    <div class="input-send p-2 d-flex justy-content-between align-items-center">
+      <input
+        class="px-2 py-1 mr-2"
+        type="text"
+        name="send"
+        id="send"
+        [formControl]="controlMessage"
+        (keydown.enter)="sendMessage()"
+      />
+      <div class="circle bg-primary" (click)="sendMessage()">
+        <fa-icon [icon]="faPaperPlane" class="text-white" style="font-size: 1.1em"></fa-icon>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="p-4">
+  <table class="table table-striped mb-5">
+    <thead>
+      <tr style="background-color: #c4c4c4">
+        <th scope="col">Código</th>
+        <th scope="col">Concepto</th>
+        <th scope="col">Motivo</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Monto máximo</th>
+        <th scope="col">Fecha inicio</th>
+        <th scope="col">Fecha fin</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of coupons">
+        <th scope="row">{{ c.sCodigoCupon }}</th>
+        <td>{{ c.sConcepto }}</td>
+        <td>{{ c.sMotivo }}</td>
+        <td>{{ c.sDescripcion }}</td>
+        <td>{{ c.dMontoMaximo | currency }}</td>
+        <td>{{ c.dFechaInicio | date : 'dd-MM-yyyy' }}</td>
+        <td>{{ c.dFechaFin | date : 'dd-MM-yyyy' }}</td>
+        <td class="text-center">
+          <fa-icon
+            [icon]="faPencilAlt"
+            class="text-primary mx-1"
+            [routerLink]="['/settings/coupon', c.iIdCupon]"
+          ></fa-icon>
+          <fa-icon [icon]="faTimes" class="text-danger mx-1" (click)="openModalDelete(c)"></fa-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ngb-pagination
+    (pageChange)="pageChange($event)"
+    class="d-flex justify-content-center"
+    [collectionSize]="totalPages"
+    [(page)]="page"
+    [pageSize]="10"
+    [maxSize]="5"
+    [boundaryLinks]="true"
+  >
+  </ngb-pagination>
+
+  <hr class="divider" />
+  <button class="btn btn-primary" type="button" [routerLink]="['/settings/coupon']">Añadir nuevo</button>
+</div>

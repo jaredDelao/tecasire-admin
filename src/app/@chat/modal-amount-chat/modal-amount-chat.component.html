@@ -1,0 +1,23 @@
+<div align="end">
+  <button mat-icon-button mat-dialog-close color="primary">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div class="content-modal">
+  <h4 class="text-primary text-center">DATOS DE ENVÍO</h4>
+
+  <div class="actions mt-3 d-flex flex-column mb-3">
+    <mat-form-field>
+      <input matInput type="number" placeholder="Monto de envío" [formControl]="controlMonto" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Còdigo postal" [formControl]="controlCP" />
+    </mat-form-field>
+
+    <button class="btn btn-primary" [disabled]="controlMonto.invalid || controlCP.invalid" (click)="sendData()">
+      Establecer
+    </button>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+@import "src/theme/theme-variables";
+
+.wrapper-order-chat {
+  height: 100%;
+}
+.header {
+  background-color: #aec3d9;
+  height: 76px;
+}
+
+.wrapper-tabla {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.tabla {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+
+  // tr {
+  //     border-bottom: 1px solid #ccc;
+  // }
+
+  &__table {
+    width: 100%;
+    border-spacing: 10px;
+    tr:first {
+      border-bottom: 1px solid #000;
+    }
+    tr:not(:first-child) {
+      border-bottom: 1px solid #d7dbdd;
+    }
+  }
+
+  &__first-row {
+    line-height: 40px;
+    border-bottom: 2px solid $primary;
+    font-size: 10px;
+  }
+
+  &__description-row {
+    font-size: 10px;
+  }
+
+  &__first-rows {
+    padding: 10px 0;
+  }
+
+  &__precio {
+    color: $primary;
+    font-size: 10px;
+  }
+
+  &__select-precio {
+    font-size: 10px;
+  }
+  &__total {
+    font-size: 10px;
+  }
+}

@@ -15,7 +15,9 @@ export const environment = {
   version: env['npm_package_version'] + '-dev',
   serverUrl: '/api',
   defaultLanguage: 'en-US',
-  supportedLanguages: ['en-US', 'es-ES']
+  supportedLanguages: ['en-US', 'es-ES'],
+  url: 'https://ibccu3ybp3.execute-api.us-east-2.amazonaws.com/Desarrollo',
+  urlFigueacero: 'https://desa-figueacero.automatizate.mx/services/',
 };
 
 /*

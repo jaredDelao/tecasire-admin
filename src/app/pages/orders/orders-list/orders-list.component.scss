@@ -1,0 +1,34 @@
+@import "src/theme/theme-variables.scss";
+
+thead {
+  border-bottom: 3px solid $primary;
+}
+
+.titulo {
+  color: $primary;
+  font-weight: 600;
+}
+
+.contenedor-superior {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.clase-modificadora-uno {
+  color: $primary;
+}
+
+tr:not(tr:nth-child(even)) {
+  background-color: #d2e1ec;
+}
+
+fa-icon {
+  cursor: pointer;
+}
+
+.estatusPedido {
+  fa-icon {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,28 @@
+<div class="principal-wrapper w-100 bg-white">
+  <ng-container #empty>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <fa-icon [icon]="faCommentDots" class="text-primary" style="font-size: 60px"></fa-icon>
+      <p class="fs-1 fw-bold text-primary mb-1 text-center">No se encontraron chats activos</p>
+    </div>
+  </ng-container>
+
+  <!-- <div class="loader" *ngIf="loading">
+    <br />
+    <app-loader
+      class="text-center text-primary"
+      [isLoading]="loading"
+      size="2"
+      message="Cargando mensajes..."
+    ></app-loader>
+  </div>
+
+  <div class="wrapper">
+    <app-list-users-chat [connectedSetter]="connected" (userSelectedAction)="setUserSelected($event)">
+    </app-list-users-chat>
+
+    <ng-container *ngIf="userSelected">
+      <app-screen-chat [userSelectedSetter]="userSelected"></app-screen-chat>
+      <app-order-chat [idUserSetter]="userSelected.iIdUsuario"></app-order-chat>
+    </ng-container>
+  </div> -->
+</div>

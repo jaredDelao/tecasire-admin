@@ -1,0 +1,10 @@
+.wrapper {
+  position: relative;
+  max-height: 600px;
+  display: grid;
+  grid-template-columns: 3fr 7fr 5fr;
+  gap: 2px;
+  height: 100%;
+  align-items: flex-start;
+  // overflow: hidden;
+}

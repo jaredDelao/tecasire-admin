@@ -1,0 +1,35 @@
+<app-loader [isLoading]="isLoading"></app-loader>
+<div class="p-4" *ngIf="!isLoading">
+  <table class="table table-striped mb-5">
+    <thead>
+      <tr style="background-color: #c4c4c4">
+        <th scope="col">Producto</th>
+        <th scope="col">Mínimo de compra</th>
+        <th scope="col">Descuento</th>
+        <th scope="col">Fecha inicio</th>
+        <th scope="col">Fecha fin</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of discounts">
+        <th scope="row">{{ d.sNombreCategoria }}</th>
+        <td>{{ d.dMontoMinimo | currency }}</td>
+        <td>{{ d.dDescuento }}</td>
+        <td>{{ d.dFechaIni | date : 'dd-MM-YYYY' }}</td>
+        <td>{{ d.dFechaFinAS | date : 'dd-MM-YYYY' }}</td>
+        <td class="text-center">
+          <fa-icon
+            [icon]="faPencilAlt"
+            class="text-primary mx-1"
+            [routerLink]="['/settings/discount-product', d.iIdDescuento]"
+          ></fa-icon>
+          <fa-icon [icon]="faTimes" class="text-danger mx-1" (click)="openModalDelete(d)"></fa-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="divider" />
+  <button class="btn btn-primary" type="button" [routerLink]="['/settings/discount-product']">Añadir nuevo</button>
+</div>

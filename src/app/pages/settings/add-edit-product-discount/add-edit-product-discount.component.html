@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="row mx-0 my-3">
+    <h2 class="col-12 text-primary">{{ isRegister ? 'Añadir nuevo descuento' : 'Actualizar descuento' }}</h2>
+  </div>
+
+  <ng-container [formGroup]="form">
+    <div class="row mx-0 my-3">
+      <div class="col-3">Producto*</div>
+      <div class="col-9">
+        <select
+          id="feedProducto"
+          formControlName="producto"
+          [class]="
+            form.get('producto')?.invalid && form.get('producto')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+        >
+          <option [value]="null">Selecciona un producto</option>
+          <option *ngFor="let c of categorias" [value]="c.iIdCategoria">{{ c.sNombreCategoria }}</option>
+        </select>
+        <div id="feedProducto" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Mínimo de compra*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          id="feedMin"
+          [class]="form.get('min')?.invalid && form.get('min')?.touched ? 'form-control is-invalid' : 'form-control'"
+          formControlName="min"
+        />
+        <div id="feedMin" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Descuento*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          id="feedDiscount"
+          [class]="
+            form.get('discount')?.invalid && form.get('discount')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+          formControlName="discount"
+        />
+        <div id="feedDiscount" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Fecha inicio*</div>
+      <div class="col-9">
+        <input
+          type="date"
+          id="feedFechaInicio"
+          [class]="
+            form.get('fechaInicio')?.invalid && form.get('fechaInicio')?.touched
+              ? 'form-control is-invalid'
+              : 'form-control'
+          "
+          formControlName="fechaInicio"
+        />
+        <div id="feedFechaInicio" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Fecha fin*</div>
+      <div class="col-9">
+        <input
+          type="date"
+          id="feedFechaFin"
+          [class]="
+            form.get('fechaFin')?.invalid && form.get('fechaFin')?.touched ? 'form-control is-invalid' : 'form-control'
+          "
+          formControlName="fechaFin"
+        />
+        <div id="feedFechaFin" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="row mx-0 mt-5">
+    <div class="col-auto">
+      <button
+        mat-raised-button
+        color="primary"
+        class="px-5"
+        type="button"
+        (click)="action()"
+        [disabled]="isLoading || form.invalid || !form.dirty"
+      >
+        <app-loader style="display: inline-block" size="0.7" [isLoading]="isLoading"></app-loader>
+        <span>{{ isRegister ? 'Crear nuevo descuento' : 'Actualizar' }}</span>
+      </button>
+    </div>
+  </div>
+</div>

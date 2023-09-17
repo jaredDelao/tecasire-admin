@@ -1,9 +1,14 @@
 <div fxFlex>
   <mat-sidenav-container fxFill>
-    <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" [disableClose]="!isMobile"
-                 ngClass.gt-sm="has-border">
-      <mat-toolbar color="primary">
-        <span translate>APP_NAME</span>
+    <mat-sidenav
+      #sidenav
+      [mode]="isMobile ? 'over' : 'side'"
+      [opened]="!isMobile"
+      [disableClose]="!isMobile"
+      ngClass.gt-sm="has-border"
+    >
+      <mat-toolbar color="accent">
+        <!-- <span translate>APP_NAME</span>
         <div fxFlex></div>
         <div>
           <button mat-icon-button [matMenuTriggerFor]="userMenu">
@@ -12,35 +17,79 @@
           <mat-menu #userMenu="matMenu">
             <mat-list>
               <mat-list-item>
-                <span translate>Logged in as</span>&nbsp;<b>{{username}}</b>
+                <span translate>Logged in as</span>&nbsp;<b>{{ username }}</b>
               </mat-list-item>
               <mat-divider></mat-divider>
             </mat-list>
             <button mat-menu-item (click)="logout()" translate>Logout</button>
           </mat-menu>
         </div>
-        <app-language-selector [icon]="true"></app-language-selector>
+        <app-language-selector icon="true"></app-language-selector> -->
       </mat-toolbar>
       <nav>
+        <div>
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="/profile" routerLinkActive="active" (click)="isMobile && sidenav.close()">
+            <div class="container-profile py-3">
+              <img [src]="profile?.sAvatar" [alt]="profile?.sCorreo" />
+              <small class="text-light mt-2" style="font-weight: 400">{{
+                profile?.sNombreEmpleado + ' ' + profile?.sApellidoPaterno
+              }}</small>
+            </div>
+          </a>
+          <mat-list>
+            <!-- <mat-divider></mat-divider>
+            <a mat-list-item routerLink="/orders" routerLinkActive="active" (click)="isMobile && sidenav.close()">
+              <fa-icon [icon]="faUsers" class="text-white mr-2" style="width: 20px"></fa-icon>
+              <span>Todos los pedidos</span>
+            </a>
+            <mat-divider></mat-divider>
+            <a
+              mat-list-item
+              routerLink="/user-management"
+              routerLinkActive="active"
+              (click)="isMobile && sidenav.close()"
+            >
+              <fa-icon [icon]="faUsers" class="text-white mr-2" style="width: 20px"></fa-icon>
+              <span>Gestion de usuarios</span>
+            </a>
+            <mat-divider></mat-divider> -->
+            <a mat-list-item routerLink="/settings" routerLinkActive="active" (click)="isMobile && sidenav.close()">
+              <fa-icon [icon]="faCogs" class="text-white mr-2" style="width: 20px"></fa-icon>
+              <span>Configuración de portal</span>
+            </a>
+            <!-- <mat-divider></mat-divider>
+            <a mat-list-item routerLink="/auditoria" routerLinkActive="active" (click)="isMobile && sidenav.close()">
+              <fa-icon [icon]="faFileAlt" class="text-white mr-2" style="width: 20px"></fa-icon>
+              <span>Log de auditoría</span>
+            </a>
+            <mat-divider></mat-divider>
+            <a mat-list-item routerLink="/postal-codes" routerLinkActive="active" (click)="isMobile && sidenav.close()">
+              <fa-icon [icon]="faFileAlt" class="text-white mr-2" style="width: 20px"></fa-icon>
+              <span>Códigos postales</span>
+            </a>
+            <mat-divider></mat-divider>
+            <a mat-list-item routerLink="/chat" routerLinkActive="active" (click)="isMobile && sidenav.close()">
+              <fa-icon [icon]="faFileAlt" class="text-white mr-2" style="width: 20px"></fa-icon>
+              <span>LiveChat</span>
+            </a> -->
+          </mat-list>
+        </div>
+
         <mat-list>
-          <mat-divider></mat-divider>
-          <a mat-list-item routerLink="/home" routerLinkActive="active" (click)="isMobile && sidenav.close()">
-            <span translate>Home</span>
-          </a>
-          <mat-divider></mat-divider>
-          <a mat-list-item routerLink="/about" routerLinkActive="active" (click)="isMobile && sidenav.close()">
-            <span translate>About</span>
-          </a>
-          <mat-divider></mat-divider>
+          <mat-list-item (click)="logout()">
+            <fa-icon [icon]="faSignOutAlt" class="text-white mr-2" style="width: 20px"></fa-icon>
+            <span class="text-black">Cerrar sesión</span>
+          </mat-list-item>
         </mat-list>
       </nav>
     </mat-sidenav>
     <mat-sidenav-content>
-      <mat-toolbar color="primary" class="mat-elevation-z6">
+      <mat-toolbar color="light" class="mat-elevation-z6">
         <button class="menu-button" mat-icon-button (click)="sidenav.toggle()" fxHide.gt-sm>
           <mat-icon>menu</mat-icon>
         </button>
-        <span>{{title}}</span>
+        <!-- <span>{{ title }}</span> -->
       </mat-toolbar>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
