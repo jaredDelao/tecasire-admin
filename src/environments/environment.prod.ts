@@ -12,6 +12,6 @@ export const environment = {
   serverUrl: 'https://api.chucknorris.io',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'es-ES'],
-  url: 'https://xht1mn8n1e.execute-api.us-east-2.amazonaws.com/Produccion',
+  url: 'https://ibccu3ybp3.execute-api.us-east-2.amazonaws.com/Desarrollo',
   urlFigueacero: 'https://desa-figueacero.automatizate.mx/services/',
 };
