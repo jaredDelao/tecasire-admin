@@ -7,7 +7,7 @@ import { faUsers, faCogs, faFileAlt, faSignOutAlt } from '@fortawesome/free-soli
 import { AuthenticationService, CredentialsService } from '@app/auth';
 import { ProfileService } from '@app/@core/services/profile.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Profile } from '@app/@core/interfaces/profile.models';
 import * as _ from 'lodash';
 
@@ -16,7 +16,7 @@ import * as _ from 'lodash';
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss'],
 })
-export class ShellComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ShellComponent implements OnInit, OnDestroy {
   faUsers = faUsers;
   faCogs = faCogs;
   faFileAlt = faFileAlt;
@@ -42,41 +42,27 @@ export class ShellComponent implements OnInit, OnDestroy, AfterViewInit {
     this.$unsubs.complete();
   }
 
-  ngAfterViewInit(): void {
-    this.listenerProfileChanges();
-  }
-
-  private listenerProfileChanges(): void {
-    this.profileService.$profile.subscribe((profile) => {
-      if (_.isEmpty(profile)) return;
-      if (this.profile?.sNombreEmpleado !== profile.sNombreEmpleado) {
-        this.profile.sNombreEmpleado = profile.sNombreEmpleado;
-      }
-      if (this.profile.sApellidoPaterno !== profile.sApellidoPaterno) {
-        this.profile.sApellidoPaterno = profile.sApellidoPaterno;
-      }
-      if (profile?.sAvatar && this.profile.sAvatar !== profile?.sAvatar) {
-        this.profile.sAvatar = profile.sAvatar;
-      }
-    });
-  }
-
-  logout() {
+  logout(): void {
     this.authenticationService.logout().subscribe(() => this.router.navigate(['/login'], { replaceUrl: true }));
   }
 
   private getProfile(): void {
     const credentials = this.credentialsService.credentials;
     if (!credentials) return;
-    this.profileService
-      .getProfile(credentials.email)
-      .pipe(takeUntil(this.$unsubs))
-      .subscribe((profile) => {
-        // TODO: setear variable idUsuario en el localStorage (iIdUsrEmpleado)
-        this.profile = profile[0];
-        credentials.idUsuario = String(this.profile.iIdUsrEmpleado);
-        this.credentialsService.setCredentials(credentials);
-      });
+
+    const profile = this.profileService.profile.value;
+    if (_.isEmpty(profile)) {
+      this.profileService
+        .getProfile(credentials.email)
+        .pipe(takeUntil(this.$unsubs))
+        .subscribe((profile) => {
+          this.profile = profile.data[0];
+          this.profileService.profile.next(this.profile);
+        });
+    } else {
+      console.log(profile);
+      this.profile = profile;
+    }
   }
 
   get username(): string | null {
@@ -90,5 +76,9 @@ export class ShellComponent implements OnInit, OnDestroy, AfterViewInit {
 
   get title(): string {
     return this.titleService.getTitle();
+  }
+
+  get profileData(): Observable<Profile> {
+    return this.profileService.$profile;
   }
 }

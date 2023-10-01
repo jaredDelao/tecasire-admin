@@ -16,25 +16,21 @@ export class AuthInterceptorService implements HttpInterceptor {
     let request = req;
     let exclude = false;
 
-    const excludeUrls = ['/empleados/perfil?sCorreo', 'iCodigoPostal'];
+    const excludeUrls = ['/login'];
     if (excludeUrls.includes(req.url)) exclude = true;
 
     if (_credentials.token && !exclude) {
       request = req.clone({
-        setParams: {
-          iIdEmpleado: _credentials?.idUsuario || '',
-        },
+        params: req.params.set('authorizationToken', _credentials.token),
         setHeaders: {
           'Content-type': 'application/json',
-          Authorization: `${_credentials.token}`,
         },
       });
     }
 
     return next.handle(request).pipe(
       catchError((response: HttpErrorResponse) => {
-        console.log({ response });
-        if (response.status === 0) {
+        if (response.status === 401) {
           localStorage.removeItem('credentials');
           sessionStorage.removeItem('credentials');
           this.router.navigate(['/login'], { replaceUrl: true });

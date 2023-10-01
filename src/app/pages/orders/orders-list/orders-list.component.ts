@@ -109,15 +109,20 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   private getOrders(page: number = 1): void {
     this.isLoading = true;
     this.orderService
-      .getAllOrders(String(page))
+      .getAllOrders(page.toString(), '10')
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((orders) => {
-        this.orders = orders;
-        this.orders$.next(orders);
-        if (this.orders.length > 0) {
-          this.totalPages = this.orders[0].totreg;
-        }
-        this.isLoading = false;
+      .subscribe({
+        next: (ordersResp) => {
+          const orders = ordersResp.data;
+          this.orders = orders;
+          this.orders$.next(orders);
+          this.totalPages = ordersResp.extradata.iTotalPags;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.log(err);
+          this.isLoading = false;
+        },
       });
   }
 }

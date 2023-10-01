@@ -31,14 +31,14 @@
           <mat-divider></mat-divider>
           <a mat-list-item routerLink="/profile" routerLinkActive="active" (click)="isMobile && sidenav.close()">
             <div class="container-profile py-3">
-              <img [src]="profile?.sAvatar" [alt]="profile?.sCorreo" />
+              <img [src]="(profileData | async)?.sAvatar" [alt]="(profileData | async)?.sCorreo" />
               <small class="text-light mt-2" style="font-weight: 400">{{
-                profile?.sNombreEmpleado + ' ' + profile?.sApellidoPaterno
+                (profileData | async)?.sNombreEmpleado + ' ' + (profileData | async)?.sApellidoPaterno
               }}</small>
             </div>
           </a>
           <mat-list>
-            <!-- <mat-divider></mat-divider>
+            <mat-divider></mat-divider>
             <a mat-list-item routerLink="/orders" routerLinkActive="active" (click)="isMobile && sidenav.close()">
               <fa-icon [icon]="faUsers" class="text-white mr-2" style="width: 20px"></fa-icon>
               <span>Todos los pedidos</span>
@@ -53,12 +53,12 @@
               <fa-icon [icon]="faUsers" class="text-white mr-2" style="width: 20px"></fa-icon>
               <span>Gestion de usuarios</span>
             </a>
-            <mat-divider></mat-divider> -->
+            <mat-divider></mat-divider>
             <a mat-list-item routerLink="/settings" routerLinkActive="active" (click)="isMobile && sidenav.close()">
               <fa-icon [icon]="faCogs" class="text-white mr-2" style="width: 20px"></fa-icon>
               <span>Configuración de portal</span>
             </a>
-            <!-- <mat-divider></mat-divider>
+            <mat-divider></mat-divider>
             <a mat-list-item routerLink="/auditoria" routerLinkActive="active" (click)="isMobile && sidenav.close()">
               <fa-icon [icon]="faFileAlt" class="text-white mr-2" style="width: 20px"></fa-icon>
               <span>Log de auditoría</span>
@@ -72,7 +72,7 @@
             <a mat-list-item routerLink="/chat" routerLinkActive="active" (click)="isMobile && sidenav.close()">
               <fa-icon [icon]="faFileAlt" class="text-white mr-2" style="width: 20px"></fa-icon>
               <span>LiveChat</span>
-            </a> -->
+            </a>
           </mat-list>
         </div>
 

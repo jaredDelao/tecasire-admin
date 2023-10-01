@@ -5,20 +5,21 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Result } from '../interfaces/common.models';
 import { Profile, ProfileRequest } from '../interfaces/profile.models';
 import { Credentials } from '@app/auth';
+import { GenericResp } from '../interfaces/generic.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
-  url: string = environment.url + '/empleados/perfil';
+  url: string = `${environment.url}/empleados`;
 
   profile = new BehaviorSubject<Profile>({} as Profile);
   $profile = this.profile.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  getProfile(email: string): Observable<Profile[]> {
-    return this.http.get<Profile[]>(this.url + `?sCorreo=${email}`);
+  getProfile(email: string): Observable<GenericResp<Profile>> {
+    return this.http.get<GenericResp<Profile>>(`${this.url}/perfil?sCorreo=${email}`);
   }
 
   updateProfile(req: ProfileRequest): Observable<Result> {

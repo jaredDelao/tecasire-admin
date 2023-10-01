@@ -11,6 +11,7 @@ import { Credentials, CredentialsService } from './credentials.service';
 import { ProfileService } from '@app/@core/services/profile.service';
 import { Subject } from 'rxjs';
 import { Logger, UntilDestroy } from '@app/@core';
+import { Md5 } from 'ts-md5';
 
 const log = new Logger('Login');
 
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private credentialsService: CredentialsService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private authService: AuthenticationService
   ) {
     this.createForm();
   }
@@ -45,44 +47,37 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   async login() {
-    // this.isLoading = true;
-    // try {
-    //   const data = await Auth.signIn({
-    //     username: this.loginForm.get('username').value,
-    //     password: this.loginForm.get('password').value,
-    //   });
-    //   const idToken = data.getSignInUserSession().getIdToken().getJwtToken();
-    //   console.log({ idToken, data });
-    //   const credentials: Credentials = {
-    //     username: data.storage.nombre,
-    //     token: idToken,
-    //     email: this.loginForm.get('username').value,
-    //     idUsuario: data.storage.idCliente,
-    //   };
-    //   this.credentialsService.setCredentials({ ...credentials });
-    //   this.getProfile(credentials);
-    // } catch (error) {
-    //   this.isLoading = false;
-    //   console.log(error);
-    // }
-    // const login$ = this.authenticationService.login(this.loginForm.value);
-    // login$
-    //   .pipe(
-    //     finalize(() => {
-    //       this.loginForm.markAsPristine();
-    //       this.isLoading = false;
-    //     }),
-    //     untilDestroyed(this)
-    //   )
-    //   .subscribe(
-    //     (credentials) => {
-    //       log.debug(`${credentials.username} successfully logged in`);
-    //     },
-    //     (error) => {
-    //       log.debug(`Login error: ${error}`);
-    //       this.error = error;
-    //   }
-    // );
+    this.isLoading = true;
+    const request = {
+      usuario: this.loginForm.get('username')?.value ?? '',
+      pass: Md5.hashStr(this.loginForm.get('password')?.value ?? ''),
+    };
+
+    this.authService
+      .login(request)
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe({
+        next: (resp) => {
+          console.log(resp);
+          this.isLoading = false;
+          if (resp.result === 'error') return (this.error = resp.data[0].sMensaje);
+
+          const { sMensaje: token, sNombre } = resp.data[0];
+
+          const credentials: Credentials = {
+            username: sNombre,
+            token,
+            email: this.loginForm.get('username')?.value || '',
+          };
+          this.credentialsService.setCredentials({ ...credentials });
+          this.getProfile(credentials);
+          return;
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.error = err;
+        },
+      });
   }
 
   private getProfile(credentials: Credentials): void {
@@ -90,14 +85,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       .getProfile(credentials.email)
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe((profileResp) => {
-        // TODO: setear variable idUsuario en el localStorage (iIdUsrEmpleado)
-        const profile = profileResp[0];
-        credentials.idUsuario = String(profile.iIdUsrEmpleado);
-        console.log({ credentials });
-        this.credentialsService.setCredentials(credentials);
-
+        const profile = profileResp.data[0];
+        this.profileService.setProfile(profile);
         this.isLoading = false;
-        this.router.navigate([this.route.snapshot.queryParams['redirect'] || '/settings'], { replaceUrl: true });
+        this.router.navigate([this.route.snapshot.queryParams['redirect'] || '/orders'], { replaceUrl: true });
       });
   }
 

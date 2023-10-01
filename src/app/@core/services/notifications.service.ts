@@ -12,4 +12,11 @@ export class NotificationsService {
       duration,
     });
   }
+
+  error(message: string, duration: number = 4000) {
+    this._snackBar.open(message, '', {
+      duration,
+      panelClass: ['snack-error'],
+    });
+  }
 }

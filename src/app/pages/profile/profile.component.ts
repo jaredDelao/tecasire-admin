@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProfileRequest } from '@app/@core/interfaces/profile.models';
 import { NotificationsService } from '@app/@core/services/notifications.service';
 import { ProfileService } from '@app/@core/services/profile.service';
-// import { Auth } from 'aws-amplify';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ModaUpdatePasswordComponent } from '../../@shared/components/moda-update-password/moda-update-password.component';
@@ -57,7 +56,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formInit();
-    this.getProfile();
+    this.validateProfile();
   }
 
   ngOnDestroy(): void {
@@ -65,18 +64,28 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.$unsubscribe.complete();
   }
 
-  private getProfile() {
+  private validateProfile() {
     this.isLoading = true;
-    this.profileService
-      .getProfile(this._credentials.email)
-      .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((profile) => {
-        this.isLoading = false;
-        this.photoConfig.photo = profile[0].sAvatar;
-        this.form.patchValue({
-          ...profile[0],
-        });
+    const profile = this.profileService.profile.value;
+    if (_.isEmpty(profile)) {
+      this.getProfile();
+    } else {
+      this.photoConfig.photo = profile.sAvatar;
+      this.form.patchValue({
+        ...profile,
       });
+      this.isLoading = false;
+    }
+  }
+
+  private getProfile() {
+    this.profileService.$profile.subscribe((profile) => {
+      this.photoConfig.photo = profile.sAvatar;
+      this.form.patchValue({
+        ...profile,
+      });
+      if (!_.isEmpty(profile)) this.isLoading = false;
+    });
   }
 
   private formInit(): void {
@@ -155,18 +164,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.profileService
       .updateProfile(req)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((res) => {
-        this.isLoading = false;
-        if (res.result === 'ok') {
-          this.notifService.openSnackBar('Perfil guardado correctamente');
-          const profileData = { ...this.profileService.profile.value };
-          // if (_.isEmpty(profileData)) return;
-          profileData.sApellidoPaterno = req.appaterno;
-          profileData.sApellidoMaterno = req.appaterno;
-          profileData.sNombreEmpleado = req.nombreemp;
-          if (this.photoConfig.type) profileData.sAvatar = this.photoConfig.photo;
-          this.profileService.setProfile(profileData);
-        }
+      .subscribe({
+        next: (res) => {
+          this.isLoading = false;
+          if (res.result === 'ok') {
+            this.profileService.setProfile({
+              ...this.form.getRawValue(),
+              sAvatar: this.photoConfig.photo,
+              sEstatus: '1',
+            });
+            this.form.markAsPristine();
+            return this.notifService.openSnackBar('Perfil guardado correctamente');
+          }
+
+          return this.notifService.error('Error al actualizar el perfil');
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.notifService.error('Error al actualizar el perfil');
+        },
       });
   }
 }

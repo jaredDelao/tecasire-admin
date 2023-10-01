@@ -1,19 +1,26 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { Order, OrderDetail } from '../interfaces/orders.models';
+import { GenericResp } from '../interfaces/generic.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersService {
-  url: string = environment.url + '/pedidos';
+  url: string = environment.url;
 
   constructor(private http: HttpClient) {}
 
-  getAllOrders(page: string = '1', count: string = '10'): Observable<Order[]> {
-    return this.http.get<Order[]>(this.url + `?regxpag=${count}&pagina=${page}&authorizationToken=b3b5fa4dd6e77d8`);
+  getAllOrders(pagina: string, regxpag: string): Observable<GenericResp<Order>> {
+    let body = new HttpParams({
+      fromObject: {
+        regxpag,
+        pagina,
+      },
+    });
+    return this.http.get<GenericResp<Order>>(`${this.url}/pedidos`, { params: body });
   }
 
   getOrderById(idOrder: string): Observable<OrderDetail[]> {

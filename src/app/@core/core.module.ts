@@ -22,11 +22,11 @@ import { AuthInterceptorService } from './http/auth-interceptor.service';
       useClass: ErrorHandlerInterceptor,
       multi: true,
     },
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptorService,
-    //   multi: true,
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
     {
       provide: RouteReuseStrategy,
       useClass: RouteReusableStrategy,

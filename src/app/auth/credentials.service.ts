@@ -5,7 +5,7 @@ export interface Credentials {
   username?: string;
   token: string;
   email: string;
-  idUsuario?: string;
+  // idUsuario?: string;
 }
 
 const credentialsKey = 'credentials';
