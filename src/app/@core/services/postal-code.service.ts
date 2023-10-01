@@ -6,17 +6,18 @@ import { map, pluck } from 'rxjs/operators';
 import { Result } from '../interfaces/common.models';
 import { Coupon, UpdateCoupon } from '../interfaces/coupon.models';
 import { Address, PostalCode, PostalCodeUpdate } from '../interfaces/postal-codes.models';
+import { GenericResp } from '../interfaces/generic.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostalCodeService {
-  url: string = environment.url + '/costoenvios';
+  url: string = environment.url + '/costosenvio';
 
   constructor(private http: HttpClient) {}
 
-  getAllPostalCodes(page: string = '1', count: string = '10'): Observable<PostalCode[]> {
-    return this.http.get<PostalCode[]>(this.url + `?regxpag=${count}&pagina=${page}`);
+  getAllPostalCodes(page: number = 1, count: number = 10): Observable<GenericResp<PostalCode>> {
+    return this.http.get<GenericResp<PostalCode>>(this.url + `?regxpag=${count}&pagina=${page}`);
   }
 
   getPostalCodeByID(id: string): Observable<PostalCode[]> {

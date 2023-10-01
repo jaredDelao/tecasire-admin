@@ -48,12 +48,18 @@ export class PostalCodesComponent implements OnInit, OnDestroy {
   private getPostalCodes(page: number = 1): void {
     this.isLoading = true;
     this.cpService
-      .getAllPostalCodes(String(page))
+      .getAllPostalCodes(page)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((cps) => {
-        this.isLoading = false;
-        this.postalCodes = cps;
-        this.totalPages = cps[0].totreg;
+      .subscribe({
+        next: (cps) => {
+          this.isLoading = false;
+          this.postalCodes = cps.data;
+          this.totalPages = cps.extradata.iTotalPags;
+        },
+        error: (e) => {
+          this.isLoading = false;
+          console.error(e);
+        },
       });
   }
 
