@@ -4,6 +4,7 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { Result } from '../interfaces/common.models';
 import { User } from '../interfaces/users.models';
+import { GenericResp } from '../interfaces/generic.models';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +14,15 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(page: string = '1', count: string = '10'): Observable<User[]> {
-    return this.http.get<User[]>(this.url + `?regxpag=${count}&pagina=${page}`);
+  getUsers(page: number = 1, count: number = 10): Observable<GenericResp<User>> {
+    return this.http.get<GenericResp<User>>(this.url + `?regxpag=${count}&pagina=${page}`);
   }
 
-  getUserById(id: string): Observable<User[]> {
-    return this.http.get<User[]>(this.url + `/id?idEmpleado=${id}`);
+  getUserById(id: string): Observable<GenericResp<User>> {
+    return this.http.get<GenericResp<User>>(`${this.url}/${id}`);
   }
 
-  updateUser(req: any): Observable<Result> {
-    return this.http.put<Result>(this.url + `/id`, req);
+  updateUser(req: any): Observable<GenericResp<Result>> {
+    return this.http.put<GenericResp<Result>>(this.url, req);
   }
 }

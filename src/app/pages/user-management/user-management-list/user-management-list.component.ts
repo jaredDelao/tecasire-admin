@@ -19,7 +19,7 @@ export class UserManagementListComponent implements OnInit, OnDestroy {
   faPencilAlt = faPencilAlt;
   users: User[] = [];
   catProfiles: PerfilUsuario[] = [];
-  totalPages = 30;
+  totalPages = 10;
   page = 1;
   isLoading = false;
 
@@ -52,19 +52,25 @@ export class UserManagementListComponent implements OnInit, OnDestroy {
       .perfilesUsuario()
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe((profiles) => {
-        this.catProfiles = profiles;
+        this.catProfiles = profiles.data;
       });
   }
 
   private getUsers(page: number = 1): void {
     this.isLoading = true;
     this.usersService
-      .getUsers(String(page))
+      .getUsers(page)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((users) => {
-        this.isLoading = false;
-        this.users = users.filter((user) => user.sEstatus !== 0);
-        this.totalPages = this.users[0].totreg;
+      .subscribe({
+        next: (usersResp) => {
+          const users = usersResp.data;
+          this.users = users.filter((user) => user.sEstatus !== 0);
+          this.totalPages = usersResp.extradata.iTotalPags;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.notifService.error('Ocurrió un error al obtener los usuarios');
+        },
       });
   }
 
@@ -90,7 +96,6 @@ export class UserManagementListComponent implements OnInit, OnDestroy {
       id_empleado: String(id),
       sestatus: '0',
     };
-    // TODO: implement delete user with Auth cognito
     this.usersService
       .updateUser(req)
       .pipe(takeUntil(this.$unsubscribe))

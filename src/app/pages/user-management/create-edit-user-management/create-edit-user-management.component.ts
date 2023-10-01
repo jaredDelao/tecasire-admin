@@ -12,6 +12,7 @@ import { RepeatPasswordValidator } from '@app/@shared/validators/repeat-password
 // import { Auth } from 'aws-amplify';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { isEmpty } from 'lodash';
 import { ModaUpdatePasswordComponent } from '../../../@shared/components/moda-update-password/moda-update-password.component';
 
 interface FormUser {
@@ -20,7 +21,8 @@ interface FormUser {
   password: string;
   repeat_password: string;
   name: string;
-  family_name: string;
+  sApellidoPaterno: string;
+  sApellidoMaterno: string;
   profile: string;
 }
 
@@ -74,7 +76,8 @@ export class CreateEditUserManagementComponent implements OnInit, OnDestroy {
         password: [null, validatorsPassword],
         repeat_password: [null, this.isRegister ? [Validators.required] : []],
         name: [null, Validators.required],
-        family_name: [null, Validators.required],
+        sApellidoPaterno: [null, Validators.required],
+        sApellidoMaterno: [null, Validators.required],
         profile: [null, Validators.required],
       },
       {
@@ -98,24 +101,38 @@ export class CreateEditUserManagementComponent implements OnInit, OnDestroy {
 
   private getUserById(): void {
     if (this.isRegister) return;
+    this.isLoading = true;
     this.usersService
       .getUserById(String(this.idUser))
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((user) => {
-        if (user.length === 0) {
-          this.notifService.openSnackBar('No se encontraron datos del usuario');
-          return this.router.navigate(['/user-management']);
-        }
-        this.user = user[0];
-        this.form.patchValue({
-          idUser: this.idUser,
-          email: this.user.sCorreo,
-          name: this.user.sNombreEmpleado,
-          family_name: this.user.sApellidoPaterno + ' ' + this.user.sApellidoMaterno,
-          profile: this.user.iIdPerfil,
-        });
-        return;
+      .subscribe({
+        next: (resp) => {
+          if (resp.result !== 'ok' || isEmpty(resp.data)) {
+            return this.userNotFound();
+          }
+          this.user = resp.data[0];
+          this.form.patchValue({
+            idUser: this.idUser,
+            email: this.user.sCorreo,
+            name: this.user.sNombreEmpleado,
+            sApellidoPaterno: this.user.sApellidoPaterno,
+            sApellidoMaterno: this.user.sApellidoMaterno,
+            profile: this.user.iIdPerfil,
+          });
+          return;
+        },
+        error: () => {
+          this.userNotFound();
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
       });
+  }
+
+  private userNotFound(): void {
+    this.notifService.error('No se encontraron datos del usuario');
+    this.router.navigate(['/user-management']);
   }
 
   private async register(): Promise<void> {
@@ -145,37 +162,38 @@ export class CreateEditUserManagementComponent implements OnInit, OnDestroy {
   private update(): void {
     const req = {
       nombreemp: this._form.name,
-      appaterno: this._form.family_name,
-      apmaterno: '',
+      appaterno: this._form.sApellidoPaterno,
+      apmaterno: this._form.sApellidoMaterno,
       id_perfil: String(this._form.profile),
       id_empleado: this.idUser,
-      typephoto: 'webp',
-      sestatus: '1',
     };
     this.isLoading = true;
     this.usersService
       .updateUser(req)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe(
-        (res) => {
-          this.isLoading = false;
+      .subscribe({
+        next: (res) => {
           if (res.result === 'ok') {
             this.notifService.openSnackBar('Usuario actualizado correctamente');
           } else {
-            this.notifService.openSnackBar('Ocurrió un error inesperado');
+            this.notifService.error('Ocurrió un error al actualizar el usuario');
           }
         },
-        (e) => (this.isLoading = false)
-      );
+        error: () => {
+          this.isLoading = false;
+          this.notifService.error('Ocurrió un error al actualizar el usuario');
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
   }
 
   private getCatPerfiles(): void {
     this.catService
       .perfilesUsuario()
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((profiles) => {
-        this.catProfile = profiles;
-      });
+      .subscribe((profiles) => (this.catProfile = profiles.data));
   }
 
   async openModalUpdatePassword() {

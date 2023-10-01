@@ -1,9 +1,9 @@
-<div class="_user-management">
+<div class="container _user-management">
   <div class="row mx-0 my-3">
     <h2 class="col-12 text-primary">{{ isRegister ? 'Añadir nuevo usuario' : 'Actualizar usuario' }}</h2>
   </div>
 
-  <div class="d-flex justify-content-end mt-2" *ngIf="!isRegister">
+  <div class="d-flex justify-content-end mt-2 px-2" *ngIf="!isRegister">
     <div class="col-auto">
       <button mat-raised-button color="accent" type="button" (click)="openModalUpdatePassword()">
         Restablecer contraseña
@@ -33,19 +33,37 @@
       </div>
     </div>
     <div class="row mx-0 my-3">
-      <div class="col-3">Apellidos*</div>
+      <div class="col-3">Apellidos paterno*</div>
       <div class="col-9">
         <input
           type="text"
           id="feedFamily"
           [class]="
-            form.get('family_name')?.invalid && form.get('family_name')?.touched
+            form.get('sApellidoPaterno')?.invalid && form.get('sApellidoPaterno')?.touched
               ? 'form-control is-invalid'
               : 'form-control'
           "
-          formControlName="family_name"
+          formControlName="sApellidoPaterno"
         />
         <div id="feedFamily" class="invalid-feedback">
+          {{ txtError }}
+        </div>
+      </div>
+    </div>
+    <div class="row mx-0 my-3">
+      <div class="col-3">Apellido materno*</div>
+      <div class="col-9">
+        <input
+          type="text"
+          id="feedFamilyM"
+          [class]="
+            form.get('sApellidoMaterno')?.invalid && form.get('sApellidoMaterno')?.touched
+              ? 'form-control is-invalid'
+              : 'form-control'
+          "
+          formControlName="sApellidoMaterno"
+        />
+        <div id="feedFamilyM" class="invalid-feedback">
           {{ txtError }}
         </div>
       </div>

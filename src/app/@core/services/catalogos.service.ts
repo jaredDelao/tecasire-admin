@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import {
   TipoPedidos,
   TiposCupon,
 } from '../interfaces/categoria.models';
+import { GenericResp } from '../interfaces/generic.models';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +24,10 @@ export class CatalogosService {
     return this.http.get<Catalogo[]>(this.url + '?catname=cat_categorias');
   }
 
-  perfilesUsuario(): Observable<PerfilUsuario[]> {
-    return this.http.get<PerfilUsuario[]>(this.url + '?catname=cat_perfiles');
+  perfilesUsuario(): Observable<GenericResp<PerfilUsuario>> {
+    return this.http.get<GenericResp<PerfilUsuario>>(`${this.url}/perfiles`, {
+      params: this.params,
+    });
   }
 
   tipoPedidos(): Observable<TipoPedidos[]> {
@@ -41,5 +44,14 @@ export class CatalogosService {
 
   motivosCupones(): Observable<MotivosCupon[]> {
     return this.http.get<MotivosCupon[]>(this.url + '?catname=cat_motivoscupones');
+  }
+
+  get params() {
+    return new HttpParams({
+      fromObject: {
+        regxpag: 100,
+        pagina: 1,
+      },
+    });
   }
 }
