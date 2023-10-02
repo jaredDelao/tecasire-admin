@@ -22,6 +22,7 @@ export interface Address {
   sColonia: string;
   sDelegacion: string;
   sEstado: string;
+  sMunicipio: string;
   sNumeroExterior: string;
   sNumeroInterior: string;
   sNombrePersonaRecibe: string;

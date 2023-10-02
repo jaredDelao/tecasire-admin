@@ -166,10 +166,11 @@ export class AddEditPostalCodesComponent implements OnInit, OnDestroy, AfterView
     this.cpService
       .getCp(cp)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((cps) => {
+      .subscribe((resp) => {
+        const cps = resp.data;
         this.errorCp = cps.length === 0;
         this.cps = cps;
-        if (cps.length > 0) this.form.get?.('alcaldia')?.setValue(cps[0].sDelegacion);
+        if (cps.length > 0) this.form.get?.('alcaldia')?.setValue(cps[0].sMunicipio);
         if (cps.length === 0) {
           this.form.get?.('alcaldia')?.setValue(null);
           this.form.get?.('colonia')?.setValue(null);

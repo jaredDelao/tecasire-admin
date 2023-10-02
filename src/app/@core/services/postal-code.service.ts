@@ -36,9 +36,7 @@ export class PostalCodeService {
     return this.http.delete<Result>(this.url, { body: { iIdCodigoPostal } });
   }
 
-  getCp(cp: string): Observable<Address[]> {
-    return this.http
-      .get<Address[]>(environment.urlFigueacero + `cp?iCodigoPostal=${cp}`)
-      .pipe(map((res) => res['resultDto']['sDetalle']));
+  getCp(cp: string): Observable<GenericResp<Address>> {
+    return this.http.get<GenericResp<Address>>(`${environment.url}/catalogos/codigopostal/${cp}`);
   }
 }
