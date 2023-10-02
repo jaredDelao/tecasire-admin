@@ -149,7 +149,7 @@ export class AddEditProductDiscountComponent implements OnInit, OnDestroy {
       .categorias()
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe((cats) => {
-        this.categorias = cats;
+        this.categorias = cats.data;
       });
   }
 

@@ -20,8 +20,10 @@ export class CatalogosService {
 
   constructor(private http: HttpClient) {}
 
-  categorias(): Observable<Catalogo[]> {
-    return this.http.get<Catalogo[]>(this.url + '?catname=cat_categorias');
+  categorias(): Observable<GenericResp<Catalogo>> {
+    return this.http.get<GenericResp<Catalogo>>(`${this.url}/categorias`, {
+      params: this.params,
+    });
   }
 
   perfilesUsuario(): Observable<GenericResp<PerfilUsuario>> {
@@ -30,12 +32,16 @@ export class CatalogosService {
     });
   }
 
-  tipoPedidos(): Observable<TipoPedidos[]> {
-    return this.http.get<TipoPedidos[]>(this.url + '?catname=cat_tipo_pedidos');
+  tipoPedidos(): Observable<GenericResp<TipoPedidos>> {
+    return this.http.get<GenericResp<TipoPedidos>>(`${this.url}/tipopedidos`, {
+      params: this.params,
+    });
   }
 
-  estatusPedidos(): Observable<EstatusPedidos[]> {
-    return this.http.get<EstatusPedidos[]>(this.url + '?catname=cat_estatus_pedidos');
+  estatusPedidos(): Observable<GenericResp<EstatusPedidos>> {
+    return this.http.get<GenericResp<EstatusPedidos>>(`${this.url}/estatuspedidos`, {
+      params: this.params,
+    });
   }
 
   tiposCupones(): Observable<GenericResp<TiposCupon>> {
