@@ -29,9 +29,7 @@ export class ModalGenericComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: ModalGeneric
   ) {}
 
-  ngOnInit(): void {
-    console.log(this.data);
-  }
+  ngOnInit(): void {}
 
   selectedFile(event: Event) {
     const element = event.currentTarget as HTMLInputElement;
@@ -39,12 +37,9 @@ export class ModalGenericComponent implements OnInit {
     if (!file) return;
     this.dataFile = file;
     this.controlFile.setValue(file);
-    console.log(file);
   }
 
   actionFile() {
-    // TODO: Upload image
     this.dialogRef.close(this.dataFile);
-    // console.log(this.inputFile)
   }
 }

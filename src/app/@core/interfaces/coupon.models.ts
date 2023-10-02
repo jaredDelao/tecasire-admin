@@ -14,14 +14,13 @@ export interface Coupon {
 }
 
 export interface UpdateCoupon {
-  iIdCupon?: string;
+  identificador?: string;
   sCodigoCupon: string;
   sConcepto: string;
   iIdMotivo: string;
-  iIdTipoCupon: string;
-  dMonto: string;
-  dFechaIni: string;
+  iIdTipo: string;
+  dMontoMaximo: string;
+  dFechaInicio: string;
   dFechaFin: string;
   iEstatus?: string;
-  iIdEmpleado: string;
 }

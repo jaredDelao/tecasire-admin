@@ -19,7 +19,7 @@
         <td>{{ c.sMotivo }}</td>
         <td>{{ c.sDescripcion }}</td>
         <td>{{ c.dMontoMaximo | currency }}</td>
-        <td>{{ c.dFechaInicio | date : 'dd-MM-yyyy' }}</td>
+        <td>{{ c?.dFechaInicio | date : 'dd-MM-yyyy' }}</td>
         <td>{{ c.dFechaFin | date : 'dd-MM-yyyy' }}</td>
         <td class="text-center">
           <fa-icon

@@ -5,7 +5,7 @@ import { CarruselService } from '@app/@core/services/carrusel.service';
 import { ModalGeneric, ModalGenericComponent } from '@app/@shared/components/modal-generic/modal-generic.component';
 import { faTimes, faPlus, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 export interface ParseB64 {
   b64Short: string;
@@ -107,9 +107,7 @@ export class ImagesComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.currentPosition = position;
     const req: UpdateCarrusel = {
-      iIdEmpleado: '2',
       nombrecarrusel: 'Inicio',
-      typephoto: type,
       posicion: String(position),
     };
     this.carruselService
@@ -156,21 +154,7 @@ export class ImagesComponent implements OnInit, OnDestroy {
     this.getB64(element.files[0], (b64Result) => {
       const b64 = b64Result as string;
       const { type, b64Short } = this.parseB64(b64);
-      const req: UpdateCarrusel = {
-        iIdEmpleado: '2',
-        nombrecarrusel: 'Inicio',
-        typephoto: type,
-        photo: b64Short,
-        posicion: String(position),
-      };
-      this.carruselService
-        .updateImage(req)
-        .pipe(takeUntil(this.$unsubscribe))
-        .subscribe((_) => {
-          this.isLoading = false;
-          this.currentPosition = 0;
-          if (_.result === 'ok') this.images[index].url = b64;
-        });
+      this.uploadImage(b64Short, type, position, b64);
     });
   }
 
@@ -187,7 +171,6 @@ export class ImagesComponent implements OnInit, OnDestroy {
       posicion: String(position),
       photo: b64,
       typephoto: type,
-      iIdEmpleado: '2',
       nombrecarrusel: 'Inicio',
     };
     this.carruselService
@@ -215,7 +198,8 @@ export class ImagesComponent implements OnInit, OnDestroy {
     this.carruselService
       .getImages()
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((images) => {
+      .subscribe((resp) => {
+        const images = resp.data;
         this.images.map((img, i) => {
           const imgFromBD = images.find((imgBD) => imgBD.posicion === img.posicion);
           if (imgFromBD) {

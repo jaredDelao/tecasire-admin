@@ -92,11 +92,11 @@ export class AddEditCouponsComponent implements OnInit, OnDestroy {
     if (this.isRegister) return;
     this.isLoading = true;
     this.couponService
-      .getCouponById(String(this.id))
+      .getCouponById(this.id)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((coupons) => {
+      .subscribe((resp) => {
         this.isLoading = false;
-        const coupon = coupons[0];
+        const coupon = resp.data[0];
         this.form.patchValue({
           codigo: coupon.sCodigoCupon,
           concepto: coupon.sConcepto,
@@ -107,24 +107,22 @@ export class AddEditCouponsComponent implements OnInit, OnDestroy {
           fechaFin: moment(coupon.dFechaFin).format('YYYY-MM-DD'),
         });
       });
-    // Todo: api est discount
   }
 
   register(): void {
     this.isLoading = true;
-    const { asignacion, codigo, concepto, fechaFin, fechaInicio, montoMaximo, motivo, tipo } = this._form();
-    const fechaInicial = moment(fechaInicio).format('DD-MM-YYYY');
-    const fechaFinal = moment(fechaFin).format('DD-MM-YYYY');
+    const { codigo, concepto, fechaFin, fechaInicio, montoMaximo, motivo, tipo } = this._form();
+    const fechaInicial = moment(fechaInicio).format('YYYY-MM-DD');
+    const fechaFinal = moment(fechaFin).format('YYYY-MM-DD');
     console.log(fechaInicial);
     const req: UpdateCoupon = {
       sCodigoCupon: codigo,
       sConcepto: concepto,
       iIdMotivo: String(motivo),
-      iIdTipoCupon: String(tipo),
-      dMonto: String(montoMaximo),
-      dFechaIni: fechaInicial,
+      iIdTipo: String(tipo),
+      dMontoMaximo: String(montoMaximo),
+      dFechaInicio: fechaInicial,
       dFechaFin: fechaFinal,
-      iIdEmpleado: '2',
     };
     this.couponService
       .createCoupon(req)
@@ -138,20 +136,19 @@ export class AddEditCouponsComponent implements OnInit, OnDestroy {
       });
   }
 
-  update() {
-    const { asignacion, codigo, concepto, fechaFin, fechaInicio, montoMaximo, motivo, tipo } = this._form();
-    const fechaInicial = moment(fechaInicio).format('DD-MM-YYYY');
-    const fechaFinal = moment(fechaFin).format('DD-MM-YYYY');
+  update(): void {
+    const { codigo, concepto, fechaFin, fechaInicio, montoMaximo, motivo, tipo } = this._form();
+    const fechaInicial = moment(fechaInicio).format('YYYY-MM-DD');
+    const fechaFinal = moment(fechaFin).format('YYYY-MM-DD');
     const req: UpdateCoupon = {
       sCodigoCupon: codigo,
       sConcepto: concepto,
       iIdMotivo: String(motivo),
-      iIdTipoCupon: String(tipo),
-      dMonto: String(montoMaximo),
-      dFechaIni: fechaInicial,
+      iIdTipo: String(tipo),
+      dMontoMaximo: String(montoMaximo),
+      dFechaInicio: fechaInicial,
       dFechaFin: fechaFinal,
-      iIdCupon: String(this.id),
-      iIdEmpleado: '2',
+      identificador: String(this.id),
     };
     this.couponService
       .updateCoupon(req)
@@ -159,27 +156,30 @@ export class AddEditCouponsComponent implements OnInit, OnDestroy {
       .subscribe((_) => {
         if (_.result === 'ok') {
           this.notifService.openSnackBar('Cupón actualizado correctamente');
-          return this.router.navigate(['/settings'], { queryParams: { tab: '1' } });
+          return this.router.navigate(['/settings'], {
+            queryParams: { tab: '1' },
+          });
         }
+        this.notifService.error('Error al actualizar el cupón');
         return;
       });
   }
 
-  private getTiposPedidos() {
+  private getTiposPedidos(): void {
     this.catalogosService
       .tiposCupones()
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe((tipos) => {
-        this.catTiposCupones = tipos;
+        this.catTiposCupones = tipos.data;
       });
   }
 
-  private getMotivosCupones() {
+  private getMotivosCupones(): void {
     this.catalogosService
       .motivosCupones()
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe((motivos) => {
-        this.catMotivosCupones = motivos;
+        this.catMotivosCupones = motivos.data;
       });
   }
 

@@ -4,6 +4,7 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { Result } from '../interfaces/common.models';
 import { Coupon, UpdateCoupon } from '../interfaces/coupon.models';
+import { GenericResp } from '../interfaces/generic.models';
 
 @Injectable({
   providedIn: 'root',
@@ -13,12 +14,12 @@ export class CouponService {
 
   constructor(private http: HttpClient) {}
 
-  getAllCoupons(page: string = '1', count: string = '10'): Observable<Coupon[]> {
-    return this.http.get<Coupon[]>(this.url + `?regxpag=${count}&pagina=${page}`);
+  getAllCoupons(page: number = 1, count: number = 10): Observable<GenericResp<Coupon>> {
+    return this.http.get<GenericResp<Coupon>>(this.url + `?regxpag=${count}&pagina=${page}`);
   }
 
-  getCouponById(idCoupon: string): Observable<Coupon[]> {
-    return this.http.get<Coupon[]>(this.url + `/id?Id=${idCoupon}`);
+  getCouponById(idCoupon: number): Observable<GenericResp<Coupon>> {
+    return this.http.get<GenericResp<Coupon>>(`${this.url}/${idCoupon}`);
   }
 
   createCoupon(req: UpdateCoupon): Observable<Result> {

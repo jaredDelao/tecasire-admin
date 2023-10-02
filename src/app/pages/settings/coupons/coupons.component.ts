@@ -37,19 +37,19 @@ export class CouponsComponent implements OnInit, OnDestroy {
     this.$unsubscribe.complete();
   }
 
-  private getCoupons(page: string = '1') {
+  private getCoupons(page: number = 1) {
     this.couponService
       .getAllCoupons(page)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((coupons) => {
-        this.coupons = coupons;
-        this.totalPages = coupons[0].totreg;
+      .subscribe((resp) => {
+        this.coupons = resp.data;
+        this.totalPages = resp.extradata.iTotalPags;
       });
   }
 
   pageChange(id: number) {
     this.page = id;
-    this.getCoupons(String(id));
+    this.getCoupons(id);
   }
 
   openModalDelete(coupon: Coupon): void {
@@ -71,9 +71,8 @@ export class CouponsComponent implements OnInit, OnDestroy {
 
   deleteCoupon(id: number) {
     const req: Partial<UpdateCoupon> = {
-      iIdEmpleado: '2',
       iEstatus: '0',
-      iIdCupon: String(id),
+      identificador: String(id),
     };
     this.couponService
       .updateCoupon(req)
@@ -81,7 +80,7 @@ export class CouponsComponent implements OnInit, OnDestroy {
       .subscribe((_) => {
         if (_.result === 'ok') {
           this.notifService.openSnackBar('Cupón eliminado correctamente');
-          this.getCoupons(String(this.page));
+          this.getCoupons(this.page);
         }
       });
   }

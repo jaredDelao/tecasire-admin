@@ -5,8 +5,7 @@ export interface Carrusel {
 }
 
 export interface UpdateCarrusel {
-  iIdEmpleado: string;
-  typephoto: string;
+  typephoto?: string;
   posicion: string;
   nombrecarrusel: 'Inicio';
   photo?: string;

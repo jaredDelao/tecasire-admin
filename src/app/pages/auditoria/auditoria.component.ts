@@ -29,20 +29,19 @@ export class AuditoriaComponent implements OnInit, OnDestroy {
     this.$unsubscribe.complete();
   }
 
-  getLogs(page = '1') {
+  getLogs(page = 1) {
     this.auditoriaService
       .getLogs(page)
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe((logs) => {
-        this.logs = logs;
-        this.totalPages = logs[0].totreg;
+        this.logs = logs.data;
+        this.totalPages = logs.extradata.iTotalPags;
       });
   }
 
   pageChange(id: number) {
     if (!id) return;
-    console.log(id);
     this.page = id;
-    this.getLogs(String(id));
+    this.getLogs(id);
   }
 }

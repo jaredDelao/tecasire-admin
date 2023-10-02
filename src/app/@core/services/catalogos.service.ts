@@ -38,12 +38,16 @@ export class CatalogosService {
     return this.http.get<EstatusPedidos[]>(this.url + '?catname=cat_estatus_pedidos');
   }
 
-  tiposCupones(): Observable<TiposCupon[]> {
-    return this.http.get<TiposCupon[]>(this.url + '?catname=cat_tipocupones');
+  tiposCupones(): Observable<GenericResp<TiposCupon>> {
+    return this.http.get<GenericResp<TiposCupon>>(`${this.url}/tipocupones`, {
+      params: this.params,
+    });
   }
 
-  motivosCupones(): Observable<MotivosCupon[]> {
-    return this.http.get<MotivosCupon[]>(this.url + '?catname=cat_motivoscupones');
+  motivosCupones(): Observable<GenericResp<MotivosCupon>> {
+    return this.http.get<GenericResp<MotivosCupon>>(`${this.url}/motivoscupones`, {
+      params: this.params,
+    });
   }
 
   get params() {
