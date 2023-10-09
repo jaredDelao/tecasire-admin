@@ -4,12 +4,43 @@
   </h2>
   <br />
 
+  <div class="row col-12 mx-0 mb-4 px-0 w-100 align-items-end" [formGroup]="form" *ngIf="!isLoading">
+    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 mt-2">
+      <label for="fInicio" class="form-label"
+        ><small><b>Fecha inicio</b></small></label
+      >
+      <input type="date" class="form-control" id="fInicio" formControlName="dfechainicio" />
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 mt-2">
+      <label for="fFin" class="form-label"
+        ><small><b>Fecha fin</b></small></label
+      >
+      <input type="date" class="form-control" id="fFin" formControlName="dfechafin" />
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 mt-2">
+      <label class="form-label"
+        ><small><b>Perfil</b></small></label
+      >
+      <select class="form-select" aria-label="Perfil" formControlName="iIdEmpleado">
+        <option [value]="null" selected>Todos</option>
+        <option [value]="perfil.iIdPerfil" *ngFor="let perfil of catProfile">{{ perfil.sDescripcion }}</option>
+      </select>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 mt-2">
+      <button type="button" class="btn btn-secondary" (click)="resetForm()">Limpiar filtros</button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!isLoading && logs.length === 0">
+    <div class="alert alert-secondary" role="alert">No se encontraron registros</div>
+  </ng-container>
+
   <!-- <ng-container *ngIf="!isLoading && users.length > 0"> -->
   <ng-container *ngIf="!isLoading && logs.length > 0">
     <table class="table table-striped mb-5">
       <thead>
         <tr style="background-color: #c4c4c4">
-          <th scope="col">Fecha</th>
+          <th scope="col" style="min-width: 140px" [width]="'140px'">Fecha</th>
           <th scope="col">Perfil</th>
           <th scope="col">ID de usuario</th>
           <th scope="col">Nombre de usuario</th>
@@ -18,7 +49,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let log of logs">
-          <th scope="row">{{ log.fecha | date : 'dd-MM-YYYY' }}</th>
+          <th [width]="'140px'" scope="row">{{ log.fecha | date : 'dd-MM-YYYY' }}</th>
           <td>{{ log.perfil }}</td>
           <td>{{ log.IdUsuario }}</td>
           <td>{{ log.nombre }}</td>

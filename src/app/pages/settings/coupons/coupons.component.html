@@ -1,4 +1,6 @@
 <div class="p-4">
+  <button class="btn btn-primary mb-4" type="button" [routerLink]="['/settings/coupon']">Añadir nuevo</button>
+
   <table class="table table-striped mb-5">
     <thead>
       <tr style="background-color: #c4c4c4">
@@ -32,6 +34,7 @@
       </tr>
     </tbody>
   </table>
+  <pre>{{ totalPages }}</pre>
   <ngb-pagination
     (pageChange)="pageChange($event)"
     class="d-flex justify-content-center"
@@ -42,7 +45,4 @@
     [boundaryLinks]="true"
   >
   </ngb-pagination>
-
-  <hr class="divider" />
-  <button class="btn btn-primary" type="button" [routerLink]="['/settings/coupon']">Añadir nuevo</button>
 </div>

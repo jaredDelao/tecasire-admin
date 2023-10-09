@@ -6,3 +6,9 @@ export interface Log {
   s_accion: string;
   totreg: number;
 }
+
+export interface AuditoriaFilters {
+  dfechafin: string;
+  dfechainicio: string;
+  iIdEmpleado?: number;
+}

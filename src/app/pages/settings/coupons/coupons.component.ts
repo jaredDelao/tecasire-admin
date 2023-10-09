@@ -43,7 +43,7 @@ export class CouponsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe((resp) => {
         this.coupons = resp.data;
-        this.totalPages = resp.extradata.iTotalPags;
+        this.totalPages = resp.extradata.iTotal;
       });
   }
 
