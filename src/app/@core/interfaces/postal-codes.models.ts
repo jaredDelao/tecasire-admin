@@ -1,18 +1,10 @@
 export interface PostalCode {
-  iIdCodigoPostal: number;
+  iIdCostoEnvioCp?: number;
   cp: string;
+  dMonto: number;
   sAlcaldia: string;
   sColonia: string;
-  dMonto: number;
-  totreg: number;
-}
-
-export interface PostalCodeUpdate {
-  s_alcaldia: string;
-  s_codigop: string;
-  s_colonia: string;
-  d_precio: string;
-  iIdCodigoPostal?: string;
+  identificador?: number;
 }
 
 export interface Address {

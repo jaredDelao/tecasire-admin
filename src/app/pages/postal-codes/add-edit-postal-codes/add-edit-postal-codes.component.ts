@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PerfilUsuario } from '@app/@core/interfaces/categoria.models';
-import { Address, PostalCode, PostalCodeUpdate } from '@app/@core/interfaces/postal-codes.models';
+import { Address, PostalCode } from '@app/@core/interfaces/postal-codes.models';
 import { NotificationsService } from '@app/@core/services/notifications.service';
 import { PostalCodeService } from '@app/@core/services/postal-code.service';
 import { Subject } from 'rxjs';
@@ -92,12 +92,12 @@ export class AddEditPostalCodesComponent implements OnInit, OnDestroy, AfterView
     this.cpService
       .getPostalCodeByID(String(this.idCp))
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((cps) => {
-        if (cps.length === 0) {
+      .subscribe((data) => {
+        if (data.result !== 'ok') {
           this.notifService.openSnackBar('No se encontraron datos');
           return this.router.navigate(['/postal-codes']);
         }
-        this.postalCode = cps[0];
+        this.postalCode = data.data[0];
         this.form.patchValue({
           alcaldia: this.postalCode.sAlcaldia,
           cp: this.postalCode.cp,
@@ -113,11 +113,11 @@ export class AddEditPostalCodesComponent implements OnInit, OnDestroy, AfterView
     try {
       this.isLoading = true;
       const { montoEnvio, alcaldia, colonia, cp } = this._form;
-      const req: PostalCodeUpdate = {
-        d_precio: String(montoEnvio),
-        s_alcaldia: alcaldia,
-        s_codigop: cp,
-        s_colonia: colonia,
+      const req: PostalCode = {
+        cp: cp,
+        sAlcaldia: alcaldia,
+        sColonia: colonia,
+        dMonto: Number(montoEnvio),
       };
       this.cpService
         .addPostalCode(req)
@@ -137,19 +137,19 @@ export class AddEditPostalCodesComponent implements OnInit, OnDestroy, AfterView
 
   private update(): void {
     const { montoEnvio, alcaldia, colonia, cp } = this._form;
-    const req: PostalCodeUpdate = {
-      d_precio: String(montoEnvio),
-      s_alcaldia: alcaldia,
-      s_codigop: cp,
-      s_colonia: colonia,
-      iIdCodigoPostal: String(this.idCp),
+    const req: PostalCode = {
+      identificador: Number(this.idCp),
+      cp: cp,
+      sAlcaldia: alcaldia,
+      sColonia: colonia,
+      dMonto: Number(montoEnvio),
     };
     this.isLoading = true;
     this.cpService
       .updatePostalCode(req)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe(
-        (_) => {
+      .subscribe({
+        next: (_) => {
           this.isLoading = false;
           if (_.result === 'ok') {
             this.notifService.openSnackBar('Código postal actualizado correctamente');
@@ -158,8 +158,8 @@ export class AddEditPostalCodesComponent implements OnInit, OnDestroy, AfterView
             this.notifService.openSnackBar('Ocurrió un error inesperado');
           }
         },
-        (e) => (this.isLoading = false)
-      );
+        error: () => (this.isLoading = false),
+      });
   }
 
   private getCp(cp: string) {

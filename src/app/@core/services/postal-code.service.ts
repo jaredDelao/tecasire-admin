@@ -4,8 +4,7 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 import { Result } from '../interfaces/common.models';
-import { Coupon, UpdateCoupon } from '../interfaces/coupon.models';
-import { Address, PostalCode, PostalCodeUpdate } from '../interfaces/postal-codes.models';
+import { Address, PostalCode } from '../interfaces/postal-codes.models';
 import { GenericResp } from '../interfaces/generic.models';
 
 @Injectable({
@@ -20,20 +19,20 @@ export class PostalCodeService {
     return this.http.get<GenericResp<PostalCode>>(this.url + `?regxpag=${count}&pagina=${page}`);
   }
 
-  getPostalCodeByID(id: string): Observable<PostalCode[]> {
-    return this.http.get<PostalCode[]>(this.url + `/id?Id=${id}`);
+  getPostalCodeByID(id: string): Observable<GenericResp<PostalCode>> {
+    return this.http.get<GenericResp<PostalCode>>(`${this.url}/${id}`);
   }
 
-  addPostalCode(req: PostalCodeUpdate): Observable<Result> {
+  addPostalCode(req: PostalCode): Observable<Result> {
     return this.http.post<Result>(this.url, req);
   }
 
-  updatePostalCode(req: PostalCodeUpdate): Observable<Result> {
-    return this.http.put<Result>(this.url, req);
+  updatePostalCode(req: PostalCode): Observable<Result> {
+    return this.http.post<Result>(this.url, req);
   }
 
   deletePostalCode(iIdCodigoPostal: string): Observable<Result> {
-    return this.http.delete<Result>(this.url, { body: { iIdCodigoPostal } });
+    return this.http.delete<Result>(`${this.url}/${iIdCodigoPostal}`);
   }
 
   getCp(cp: string): Observable<GenericResp<Address>> {

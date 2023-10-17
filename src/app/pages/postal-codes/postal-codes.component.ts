@@ -76,7 +76,7 @@ export class PostalCodesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       // console.log(`Dialog result: ${result}`);
-      if (result) this.deleteCP(cp.iIdCodigoPostal);
+      if (result) this.deleteCP(Number(cp.iIdCostoEnvioCp));
     });
   }
 
