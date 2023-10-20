@@ -1,27 +1,12 @@
 export interface Discount {
-  iIdDescuento: number;
+  identificador?: number;
+  sNombreCategoria?: string;
+  iIdDescuento?: number | string;
   sDescripcion?: any;
-  dMontoMinimo: number;
-  dDescuento: number;
+  dMontoMinimo: number | string;
+  dDescuento: number | string;
   dFechaIni: string;
-  dFechaFinAS: string;
-  iCategoria: number;
-}
-export interface DiscountCreate {
-  montomin: string;
-  descuento: string;
-  fechaini: string;
-  fechafin: string;
-  iIdCategoria: string;
-}
-
-export interface DiscountUpdate {
-  iIdDescuento: string;
-  sDescripcion: string;
-  dMontoMinimo: string;
-  dDescuento: string;
-  iCategoria: string;
-  dFechaIni: string;
-  dFechaFin: string;
-  iIdEmpleado: string;
+  dFechaFinAS?: string;
+  dFechaFin?: string;
+  iCategoria: number | string;
 }

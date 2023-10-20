@@ -25,4 +25,8 @@ export class UsersService {
   updateUser(req: any): Observable<GenericResp<Result>> {
     return this.http.put<GenericResp<Result>>(this.url, req);
   }
+
+  resetPassword(id: string, sPassword: string): Observable<Result> {
+    return this.http.post<Result>(`${environment.url}/administracion/resetpassword/${id}`, { sPassword });
+  }
 }

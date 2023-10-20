@@ -198,18 +198,16 @@ export class CreateEditUserManagementComponent implements OnInit, OnDestroy {
 
   async openModalUpdatePassword() {
     try {
-      // TODO: Migrate AWS Cognito
-      // await Auth.forgotPassword(this._email.value);
-      // const dialogRef = this.dialog.open(ModaUpdatePasswordComponent, {
-      //   width: '400px',
-      //   maxWidth: '400px',
-      //   data: {
-      //     user: this._email.value,
-      //   },
-      // });
-      // dialogRef.afterClosed().subscribe((result) => {
-      //   console.log(`Dialog result: ${result}`);
-      // });
+      const dialogRef = this.dialog.open(ModaUpdatePasswordComponent, {
+        width: '400px',
+        maxWidth: '400px',
+        data: {
+          idUser: this.idUser,
+        },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
     } catch (error) {
       this.notifService.openSnackBar('Ocurrió un error inesperado' + error);
     }

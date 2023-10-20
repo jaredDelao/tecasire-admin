@@ -2,8 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NotificationsService } from '@app/@core/services/notifications.service';
+import { UsersService } from '@app/@core/services/users.service';
 import { password } from '@app/@shared/validators/patterns.validations';
-// import { Auth } from 'aws-amplify';
+import { Md5 } from 'ts-md5';
 
 @Component({
   selector: 'app-moda-update-password',
@@ -19,31 +20,38 @@ export class ModaUpdatePasswordComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ModaUpdatePasswordComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { user: string },
-    private notifService: NotificationsService
+    @Inject(MAT_DIALOG_DATA) public data: { idUser: string },
+    private notifService: NotificationsService,
+    private usersService: UsersService
   ) {}
 
   ngOnInit(): void {
     this.formInit();
+    console.log(this.data);
   }
 
   private formInit(): void {
     this.form = this.fb.group({
-      code: [null, [Validators.required]],
       password: [null, [Validators.required, Validators.pattern(password)]],
     });
   }
 
   async action(): Promise<void> {
     const form = this.form.value;
-    try {
-      // TODO: Migrar a AWS
-      // await Auth.forgotPasswordSubmit(this.data.user, form.code, form.password);
-      // this.notifService.openSnackBar('Contraseña actualizada correctamente');
-      this.dialogRef.close();
-    } catch (error) {
-      console.log(error);
-    }
+    const password = Md5.hashStr(form.password);
+    this.usersService.resetPassword(this.data.idUser, password).subscribe({
+      next: (resp) => {
+        if (resp.result !== 'ok') {
+          return this.notifService.openSnackBar('Ocurrió un error al actualizar password');
+        }
+
+        this.notifService.openSnackBar('Password actualizado correctamente');
+        this.dialogRef.close();
+      },
+      error: (err) => {
+        this.notifService.openSnackBar('Ocurrió un error inesperado' + err);
+      },
+    });
   }
 
   get _password(): FormControl {

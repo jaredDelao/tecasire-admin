@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Catalogo } from '@app/@core/interfaces/categoria.models';
-import { Discount, DiscountCreate, DiscountUpdate } from '@app/@core/interfaces/discounts.models';
+import { Discount } from '@app/@core/interfaces/discounts.models';
 import { CatalogosService } from '@app/@core/services/catalogos.service';
 import { NotificationsService } from '@app/@core/services/notifications.service';
 import { ProductDiscountService } from '@app/@core/services/product-discount.service';
@@ -84,13 +84,12 @@ export class AddEditProductDiscountComponent implements OnInit, OnDestroy {
   getProduct(): void {
     if (this.isRegister) return;
     this.isLoading = true;
-    // Todo: api est discount
     this.productService
       .getDiscountById(this.id)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((products) => {
+      .subscribe((resp) => {
         this.isLoading = false;
-        this.product = products[0];
+        this.product = resp.data[0];
         this.form.patchValue({
           producto: this.product.iCategoria,
           min: this.product.dMontoMinimo,
@@ -103,12 +102,13 @@ export class AddEditProductDiscountComponent implements OnInit, OnDestroy {
 
   register(): void {
     const { discount, fechaFin, fechaInicio, min, producto } = this._form();
-    const req: DiscountCreate = {
-      montomin: String(min),
-      descuento: String(discount),
-      fechaini: moment(fechaInicio).format('DD-MM-YYYY'),
-      fechafin: moment(fechaFin).format('DD-MM-YYYY'),
-      iIdCategoria: String(producto),
+    const req: Discount = {
+      dMontoMinimo: String(min),
+      sDescripcion: '',
+      dDescuento: String(discount),
+      dFechaIni: moment(fechaInicio).format('YYYY-MM-DD'),
+      dFechaFin: moment(fechaFin).format('YYYY-MM-DD'),
+      iCategoria: String(producto),
     };
     this.productService
       .createDiscount(req)
@@ -123,15 +123,14 @@ export class AddEditProductDiscountComponent implements OnInit, OnDestroy {
 
   update(): void {
     const { discount, fechaFin, fechaInicio, min, producto } = this._form();
-    const req: DiscountUpdate = {
-      iIdDescuento: String(this.id),
+    const req: Discount = {
+      identificador: this.id,
       sDescripcion: '',
       dMontoMinimo: String(min),
       dDescuento: String(discount),
+      dFechaIni: moment(fechaInicio).format('YYYY-MM-DD'),
+      dFechaFin: moment(fechaFin).format('YYYY-MM-DD'),
       iCategoria: String(producto),
-      dFechaIni: moment(fechaInicio).format('DD-MM-YYYY'),
-      dFechaFin: moment(fechaFin).format('DD-MM-YYYY'),
-      iIdEmpleado: '2',
     };
     this.productService
       .updateDiscount(req)
@@ -144,7 +143,7 @@ export class AddEditProductDiscountComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getCategorias() {
+  private getCategorias(): void {
     this.catalogosService
       .categorias()
       .pipe(takeUntil(this.$unsubscribe))

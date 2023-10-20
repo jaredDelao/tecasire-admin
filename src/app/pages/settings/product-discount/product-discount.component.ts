@@ -34,18 +34,18 @@ export class ProductDiscountComponent implements OnInit, OnDestroy {
   private getDiscounts() {
     this.isLoading = true;
     this.productDiscountService
-      .getDiscounts()
+      .getDiscounts('1')
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe((disc) => {
         this.isLoading = false;
-        this.discounts = disc;
+        this.discounts = disc.data;
       });
   }
 
   openModalDelete(discount: Discount): void {
     const data: ModalGeneric = {
       title: 'ELIMINAR USUARIO',
-      text: `¿Seguro que desea eliminar el descuento ${discount.sDescripcion}`,
+      text: `¿Seguro que desea eliminar el descuento ${discount.sNombreCategoria}`,
       actions: ['success', 'cancel'],
     };
     const dialogRef = this.dialog.open(ModalGenericComponent, {
