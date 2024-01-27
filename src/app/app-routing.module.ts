@@ -27,6 +27,10 @@ const routes: Routes = [
       loadChildren: () => import('./pages/postal-codes/postal-codes.module').then((m) => m.PostalCodesModule),
     },
     {
+      path: 'products',
+      loadChildren: () => import('./pages/products/products.module').then((m) => m.ProductsModule),
+    },
+    {
       path: 'chat',
       loadChildren: () => import('./@chat/chat.module').then((m) => m.ChatModule),
     },

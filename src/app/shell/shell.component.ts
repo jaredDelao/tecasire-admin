@@ -2,7 +2,7 @@ import { Title } from '@angular/platform-browser';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MediaObserver } from '@angular/flex-layout';
-import { faUsers, faCogs, faFileAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faCogs, faFileAlt, faSignOutAlt, faDatabase } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthenticationService, CredentialsService } from '@app/auth';
 import { ProfileService } from '@app/@core/services/profile.service';
@@ -21,6 +21,7 @@ export class ShellComponent implements OnInit, OnDestroy {
   faCogs = faCogs;
   faFileAlt = faFileAlt;
   faSignOutAlt = faSignOutAlt;
+  faProducts = faDatabase;
   profile!: Profile;
   $unsubs = new Subject<void>();
 

@@ -54,6 +54,11 @@
               <span>Gestion de usuarios</span>
             </a>
             <mat-divider></mat-divider>
+            <a mat-list-item routerLink="/products" routerLinkActive="active" (click)="isMobile && sidenav.close()">
+              <fa-icon [icon]="faProducts" class="text-white mr-2" style="width: 20px"></fa-icon>
+              <span>Gestion de productos</span>
+            </a>
+            <mat-divider></mat-divider>
             <a mat-list-item routerLink="/settings" routerLinkActive="active" (click)="isMobile && sidenav.close()">
               <fa-icon [icon]="faCogs" class="text-white mr-2" style="width: 20px"></fa-icon>
               <span>Configuración de portal</span>
