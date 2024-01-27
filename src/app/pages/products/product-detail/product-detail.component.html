@@ -1,1 +1,128 @@
-<p>product-detail works!</p>
+<div class="container _product">
+  <div class="row mx-0 my-3">
+    <h2 class="col-12 text-primary">
+      {{ isRegister ? 'Añadir nuevo producto' : 'Actualizar producto' }}
+    </h2>
+  </div>
+
+  <ng-container [formGroup]="form">
+    <div class="row mx-0 my-3">
+      <!-- Nombre -->
+      <div class="col-12 mb-3">
+        <label class="form-label">Nombre</label>
+        <input type="text" class="form-control" appValidInput formControlName="sNombre" />
+      </div>
+
+      <!-- descripcion -->
+      <div class="col-12 mb-3">
+        <label class="form-label">Descripción</label>
+        <textarea type="text" class="form-control" appValidInput formControlName="sDescripcion"></textarea>
+      </div>
+
+      <!-- descripcion complementaria -->
+      <div class="col-12 mb-3">
+        <label class="form-label">Descripción complementaria</label>
+        <textarea
+          type="text"
+          class="form-control"
+          appValidInput
+          formControlName="sDescripcionComplementaria"
+        ></textarea>
+      </div>
+
+      <!-- <pre>{{form.value | json }}</pre> -->
+      <!-- categoria -->
+      <div class="col-12 mb-3">
+        <label class="form-label">Categoría</label>
+        <select appValidInput formControlName="iIdCategoria" class="form-control">
+          <option *ngFor="let c of categoryList" [value]="c.iIdCategoria">
+            {{ c.sNombreCategoria }}
+          </option>
+        </select>
+      </div>
+
+      <!-- identificador / codigo de barras -->
+      <div class="col-12 mb-3">
+        <label class="form-label">Identificador / Código de barras</label>
+        <input type="text" class="form-control" appValidInput formControlName="sCodigoMercancia" />
+      </div>
+
+      <div class="row col-12 mb-3">
+        <div class="col-4">
+          <label class="form-label">Precio unitario</label>
+          <input type="number" class="form-control" appValidInput formControlName="dPrecioUnitario" min="1" />
+        </div>
+        <div class="col-4">
+          <label class="form-label">Precio con IVA</label>
+          <input type="number" class="form-control" appValidInput formControlName="dprecioCI" min="1" />
+        </div>
+        <div class="col-4">
+          <label class="form-label">IVA</label>
+          <input type="number" class="form-control" appValidInput formControlName="dTasaIva" min="1" />
+        </div>
+      </div>
+
+      <div class="col-12 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="bIsOferta" id="bIsOferta" />
+          <label class="form-check-label" for="bIsOferta"> Oferta </label>
+        </div>
+      </div>
+
+      <div class="col-12 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="iMercanciaNueva" id="iMercanciaNueva" />
+          <label class="form-check-label" for="iMercanciaNueva"> Mercancia nueva </label>
+        </div>
+      </div>
+
+      <div class="col-12 mb-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="iMercanciaRemate" id="iMercanciaRemate" />
+          <label class="form-check-label" for="iMercanciaRemate"> Mercancia remate </label>
+        </div>
+      </div>
+
+      <div class="col-6 mb-2">
+        <div class="image">
+          <img [src]="form.get('imagen')?.value" *ngIf="!!form.get('imagen')?.value" />
+        </div>
+      </div>
+      <div class="col-6 mb-2">
+        <button class="btn btn-primary" type="button" (click)="file.click()">Cargar imagen</button>
+
+        <input type="file" #file [style.display]="'none'" (change)="uploadFile($event)" accept="image/*" />
+      </div>
+    </div>
+  </ng-container>
+  <div class="row mx-0 my-5">
+    <div class="col-12 mb-4">
+      <button
+        mat-raised-button
+        color="primary"
+        [style.width]="'100%'"
+        class="px-5"
+        type="button"
+        (click)="updateRegister()"
+        [disabled]="isLoading || form.invalid || !form.dirty"
+      >
+        <app-loader style="display: inline-block" size="0.7" [isLoading]="isLoading"></app-loader>
+        <span>{{ isRegister ? 'Crear nuevo producto' : 'Actualizar' }}</span>
+      </button>
+    </div>
+
+    <div class="col-12">
+      <button
+        mat-raised-button
+        color="warning"
+        [style.width]="'100%'"
+        class="px-5"
+        type="button"
+        [disabled]="isLoading"
+        routerLink="/products"
+      >
+        <span>Regresar</span>
+      </button>
+    </div>
+  </div>
+</div>

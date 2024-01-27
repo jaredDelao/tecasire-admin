@@ -1,4 +1,11 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Credentials, CredentialsService } from '@app/auth';
@@ -9,7 +16,7 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private credentialService: CredentialsService) {}
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const savedCredentials = sessionStorage.getItem('credentials') || localStorage.getItem('credentials') || '{}';
     const _credentials: Credentials = JSON.parse(savedCredentials);
@@ -29,6 +36,15 @@ export class AuthInterceptorService implements HttpInterceptor {
     }
 
     return next.handle(request).pipe(
+      tap((event: HttpEvent<HttpResponse<any>>) => {
+        const token = event?.['body']?.['updateToken'];
+        if (token) {
+          this.credentialService.setCredentials({
+            ..._credentials,
+            token,
+          });
+        }
+      }),
       catchError((response: HttpErrorResponse) => {
         if (response.status === 401) {
           localStorage.removeItem('credentials');

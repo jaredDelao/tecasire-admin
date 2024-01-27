@@ -26,16 +26,12 @@ export class ProductsService {
     return this.http.get<GenericResp<Product>>(this.url, { params: body });
   }
 
-  getProductById(id: number): Observable<GenericResp<Product>> {
+  getProductById(id: string): Observable<GenericResp<Product>> {
     return this.http.get<GenericResp<Product>>(`${this.url}/${id}`);
   }
 
-  createProduct(req: any): Observable<Result> {
-    return this.http.post<Result>(this.url, req);
-  }
-
   updateProduct(req: any): Observable<Result> {
-    return this.http.post<Result>(this.url, req);
+    return this.http.put<Result>(this.url, req);
   }
 
   deleteProduct(id: number): Observable<Result> {

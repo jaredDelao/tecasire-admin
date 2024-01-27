@@ -1,5 +1,6 @@
 export interface Product {
-  iIdProducto: number;
+  identificador?: number;
+  iIdProducto?: number;
   sNombre: string;
   sDescripcion: string;
   dPrecioUnitario: number;

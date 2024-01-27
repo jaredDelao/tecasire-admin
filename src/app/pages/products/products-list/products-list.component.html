@@ -5,7 +5,7 @@
   </h2>
   <br />
 
-  <div class="row col-12 mx-0 mb-4">
+  <div class="row col-12 mx-0 mb-4 justify-content-between align-items-end">
     <div class="col-md-4 col-lg-3 px-0">
       <label class="form-label"
         ><small><b>Categoría</b></small></label
@@ -17,6 +17,10 @@
         <option value="">Todos</option>
       </select>
     </div>
+
+    <div class="col-auto">
+      <button class="btn btn-primary" type="button" (click)="newProduct()">Añadir nuevo</button>
+    </div>
   </div>
 
   <ng-container *ngIf="!isLoading && products.length > 0">
@@ -27,6 +31,7 @@
           <th scope="col">Descripción</th>
           <th scope="col">Categoría</th>
           <th scope="col">Tipo</th>
+          <th scope="col">Precio unitario</th>
           <th scope="col">Acciones</th>
         </tr>
       </thead>
@@ -36,10 +41,12 @@
           <td>{{ prod.sDescripcion }}</td>
           <td>{{ prod.sNombreCategoria }}</td>
           <td>{{ prod.sTipo }}</td>
+          <td>{{ prod.dPrecioUnitario | currency }}</td>
           <td class="text-center">
             <fa-icon
               [icon]="faPencilAlt"
               class="text-primary mx-1"
+              (click)="newProduct(prod.iIdProducto)"
               [routerLink]="['/products/product', prod.iIdProducto]"
             ></fa-icon>
             <fa-icon [icon]="faTimes" class="text-danger mx-1" (click)="openModalDelete(prod)"></fa-icon>
@@ -61,5 +68,4 @@
   </ng-container>
 
   <hr class="divider" />
-  <button class="btn btn-primary" type="button" routerLink="/products/product">Añadir nuevo</button>
 </div>

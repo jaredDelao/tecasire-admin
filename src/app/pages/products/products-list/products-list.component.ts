@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Catalogo, TipoPedidos } from '@app/@core/interfaces/categoria.models';
 import { Product } from '@app/@core/interfaces/products.model';
 import { CatalogosService } from '@app/@core/services/catalogos.service';
@@ -31,6 +32,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   $unsubscribe = new Subject<void>();
 
   constructor(
+    private router: Router,
     private dialog: MatDialog,
     private productsService: ProductsService,
     private catService: CatalogosService,
@@ -79,7 +81,6 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (productsResp) => {
           const products = productsResp.data;
-          console.log(products);
           this.products = products.filter((prod) => prod.iEstatus !== 0);
           this.totalPages = productsResp.extradata.iTotalPags;
           this.isLoading = false;
@@ -103,7 +104,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       // console.log(`Dialog result: ${result}`);
-      if (result) this.deleteProduct(product.iIdProducto);
+      if (result) this.deleteProduct(product['iIdProducto'] as number);
     });
   }
 
@@ -124,5 +125,11 @@ export class ProductsListComponent implements OnInit, OnDestroy {
           this.notifService.openSnackBar('Ocurrió un error inesperado' + e);
         },
       });
+  }
+
+  newProduct(_id: string = ''): void {
+    this.router.navigate(['/products/product/' + _id], {
+      queryParams: { categories: JSON.stringify(this.categoriesList) },
+    });
   }
 }
